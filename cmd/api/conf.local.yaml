@@ -1,0 +1,9 @@
+database:
+  log_queries: true
+  timeout_seconds: 5
+
+server:
+  port: :8080
+  debug: true
+  read_timeout_seconds: 10
+  write_timeout_seconds: 5
