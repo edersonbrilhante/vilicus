@@ -7,21 +7,21 @@ import (
 
 // Analysis is the struct that stores all data from analysis performed.
 type Analysis struct {
-	ID        string    `json:"id" pg:"id,type:uuid,pk,default:uuid_generate_v4()"`
-	Image     string    `json:"image" pg:"created_at"`
-	Status    string    `json:"status" pg:"updated_at"`
-	CreatedAt time.Time `json:"created_at" pg:"status"`
-	UpdatedAt time.Time `json:"updated_at" pg:"image"`
-	Result    string    `json:"result" pg:"errors"`
-	Errors    []string  `json:"errors" pg:"result"`
-	Results   Results   `json:"ccvs_results" pg:"ccvs_results"`
+	ID        string    `json:"id,omitempty" pg:"id,type:uuid,pk,default:uuid_generate_v4()"`
+	Image     string    `json:"image,omitempty" pg:"created_at"`
+	Status    string    `json:"status,omitempty" pg:"updated_at"`
+	CreatedAt time.Time `json:"created_at,omitempty" pg:"status"`
+	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"image"`
+	Result    string    `json:"result,omitempty" pg:"errors"`
+	Errors    []string  `json:"errors,omitempty" pg:"result"`
+	Results   Results   `json:"ccvs_results,omitempty" pg:"ccvs_results"`
 }
 
 // Results is a struct that represents ccvs scan results.
 type Results struct {
-	ClairResult         VendorResults `json:"clair"`
-	AnchoreEngineResult VendorResults `json:"anchore_engine"`
-	TrivyResult         VendorResults `json:"trivy"`
+	ClairResult         VendorResults `json:"clair,omitempty"`
+	AnchoreEngineResult VendorResults `json:"anchore_engine,omitempty"`
+	TrivyResult         VendorResults `json:"trivy,omitempty"`
 }
 
 // VendorResults stores all Unknown, Negligible Low, Medium, High and Critical vulnerabilities for a vendor
