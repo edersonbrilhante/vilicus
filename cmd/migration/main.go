@@ -36,7 +36,10 @@ func createSchema(db *pg.DB) error {
 	}
 
     for _, model := range models {
-        err := db.Model(model).CreateTable(&orm.CreateTableOptions{})
+        err := db.Model(model).CreateTable(&orm.CreateTableOptions{
+			FKConstraints: true,
+			IfNotExists: true,
+		})
 		return err
     }
     return nil
