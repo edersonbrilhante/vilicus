@@ -26,21 +26,21 @@ func checkErr(err error) {
 }
 
 func createSchema(db *pg.DB) error {
-    models := []interface{}{
-        (*ccvs.Analysis)(nil),
-    }
-	
+	models := []interface{}{
+		(*ccvs.Analysis)(nil),
+	}
+
 	_, err := db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\" WITH SCHEMA public")
 	if err != nil {
 		return err
 	}
 
-    for _, model := range models {
-        err := db.Model(model).CreateTable(&orm.CreateTableOptions{
+	for _, model := range models {
+		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
 			FKConstraints: true,
-			IfNotExists: true,
+			IfNotExists:   true,
 		})
 		return err
-    }
-    return nil
+	}
+	return nil
 }
