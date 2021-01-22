@@ -31,6 +31,13 @@ type vendor interface {
 func start(v vendor, al *ccvs.Analysis, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	v.Analyzer(al)
-	v.Parser()
+	err := v.Analyzer(al)
+	if err != nil {
+		al.Errors = append(al.Errors, err.Error())
+		return
+	}
+	err = v.Parser()
+	if err != nil {
+		al.Errors = append(al.Errors, err.Error())
+	}
 }
