@@ -10,8 +10,8 @@ type Analysis struct {
 	ID        string    `json:"id,omitempty" pg:"id,type:uuid,pk,default:uuid_generate_v4()"`
 	Image     string    `json:"image,omitempty" pg:"image"`
 	Status    string    `json:"status,omitempty" pg:"status"`
-	CreatedAt time.Time `json:"created_at,omitempty" pg:"created_at"`
-	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"updated_at"`
+	CreatedAt time.Time `json:"created_at,omitempty" pg:"created_at,notnull,default:now()"`
+	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"updated_at,notnull,default:now()"`
 	Result    string    `json:"result,omitempty" pg:"result"`
 	Errors    []string  `json:"errors,omitempty" pg:"errors"`
 	Results   Results   `json:"ccvs_results,omitempty" pg:"ccvs_results"`
