@@ -22,8 +22,9 @@ func Load(path string) (*Configuration, error) {
 
 // Configuration holds data necessary for configuring application
 type Configuration struct {
-	Server *Server   `yaml:"server,omitempty"`
-	DB     *Database `yaml:"database,omitempty"`
+	Server  *Server   `yaml:"server,omitempty"`
+	DB      *Database `yaml:"database,omitempty"`
+	Vendors *Vendors  `yaml:"vendors,omitempty"`
 }
 
 // Database holds data necessary for database configuration
@@ -38,4 +39,27 @@ type Server struct {
 	Debug        bool   `yaml:"debug,omitempty"`
 	ReadTimeout  int    `yaml:"read_timeout_seconds,omitempty"`
 	WriteTimeout int    `yaml:"write_timeout_seconds,omitempty"`
+}
+
+// Vendors is the struct that stores a list of vendors
+type Vendors struct {
+	Clair         *Clair         `yaml:"clair,omitempty"`
+	AnchoreEngine *AnchoreEngine `yaml:"anchore_engine,omitempty"`
+	Trivy         *Trivy         `yaml:"trivy,omitempty"`
+}
+
+// Clair is the struct that stores a vendor and its config
+type Clair struct {
+}
+
+// AnchoreEngine is the struct that stores a vendor and its config
+type AnchoreEngine struct {
+	URL        string `yaml:"url"`
+	Pass       string `yaml:"pass"`
+	User       string `yaml:"user"`
+	AsAccount  string `yaml:"as_account"`
+}
+
+// Trivy is the struct that stores a vendor and its config
+type Trivy struct {
 }
