@@ -8,12 +8,12 @@ import (
 // Analysis is the struct that stores all data from analysis performed.
 type Analysis struct {
 	ID        string    `json:"id,omitempty" pg:"id,type:uuid,pk,default:uuid_generate_v4()"`
-	Image     string    `json:"image,omitempty" pg:"created_at"`
-	Status    string    `json:"status,omitempty" pg:"updated_at"`
-	CreatedAt time.Time `json:"created_at,omitempty" pg:"status"`
-	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"image"`
-	Result    string    `json:"result,omitempty" pg:"errors"`
-	Errors    []string  `json:"errors,omitempty" pg:"result"`
+	Image     string    `json:"image,omitempty" pg:"image"`
+	Status    string    `json:"status,omitempty" pg:"status"`
+	CreatedAt time.Time `json:"created_at,omitempty" pg:"created_at"`
+	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"updated_at"`
+	Result    string    `json:"result,omitempty" pg:"result"`
+	Errors    []string  `json:"errors,omitempty" pg:"errors"`
 	Results   Results   `json:"ccvs_results,omitempty" pg:"ccvs_results"`
 }
 
