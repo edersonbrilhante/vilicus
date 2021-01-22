@@ -7,3 +7,15 @@ server:
   debug: true
   read_timeout_seconds: 10
   write_timeout_seconds: 5
+
+vendors:
+  anchore_engine:
+    url: http://localhost:8228
+    pass: foobar
+    user: admin
+    as_account: admin
+  clair:
+    url: 'https://localhost:6060'
+    api_version: 3      
+  trivy:
+    url: http://localhost:8080
