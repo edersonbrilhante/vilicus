@@ -54,10 +54,10 @@ type Clair struct {
 
 // AnchoreEngine is the struct that stores a vendor and its config
 type AnchoreEngine struct {
-	URL        string `yaml:"url"`
-	Pass       string `yaml:"pass"`
-	User       string `yaml:"user"`
-	AsAccount  string `yaml:"as_account"`
+	URL       string `yaml:"url"`
+	User      string `yaml:"user"`
+	Pass      string `yaml:"pass"`
+	AsAccount string `yaml:"as_account"`
 }
 
 // Trivy is the struct that stores a vendor and its config
