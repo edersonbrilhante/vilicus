@@ -1,10 +1,12 @@
 package transport
 
-import (	
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+
 	"github.com/edersonbrilhante/ccvs"
 	"github.com/edersonbrilhante/ccvs/pkg/api/analysis"
-	"github.com/labstack/echo/v4"
-	"net/http"
 )
 
 // Analysis create request
@@ -33,28 +35,27 @@ func (h HTTP) create(c echo.Context) error {
 		return err
 	}
 
-	analysis, err := h.svc.Create(c, ccvs.Analysis{
+	al, err := h.svc.Create(c, ccvs.Analysis{
 		Image: req.Image,
 	})
+
+	alu := al
+	go h.svc.Update(c, alu)
 
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, analysis)
+	return c.JSON(http.StatusOK, al)
 }
 
 func (h HTTP) view(c echo.Context) error {
-	// id, err := strconv.Atoi(c.Param("id"))
-	// if err != nil {
-	// 	return gorsk.ErrBadRequest
-	// }
+	id := c.Param("id")
 
-	// result, err := h.svc.View(c, id)
-	// if err != nil {
-	// 	return err
-	// }
-	result := "view"
+	result, err := h.svc.View(c, id)
+	if err != nil {
+		return err
+	}
 
 	return c.JSON(http.StatusOK, result)
 }

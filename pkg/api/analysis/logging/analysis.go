@@ -40,3 +40,19 @@ func (ls *LogService) Create(c echo.Context, req ccvs.Analysis) (resp ccvs.Analy
 	}(time.Now())
 	return ls.Service.Create(c, req)
 }
+
+// Update logging
+func (ls *LogService) Update(c echo.Context, req ccvs.Analysis) (resp ccvs.Analysis, err error) {
+	defer func(begin time.Time) {
+		ls.logger.Log(
+			c,
+			name, "Update analysis request", err,
+			map[string]interface{}{
+				"req":  req,
+				"resp": resp,
+				"took": time.Since(begin),
+			},
+		)
+	}(time.Now())
+	return ls.Service.Update(c, req)
+}

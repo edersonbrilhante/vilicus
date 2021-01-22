@@ -1,8 +1,11 @@
 package pgsql
 
 import (
-	"github.com/edersonbrilhante/ccvs"
+	"time"
+
 	"github.com/go-pg/pg/v10/orm"
+
+	"github.com/edersonbrilhante/ccvs"
 )
 
 // Analysis represents the client for analysis table
@@ -24,8 +27,9 @@ func (a Analysis) View(db orm.DB, id string) (ccvs.Analysis, error) {
 }
 
 // Update updates analysis's info
-func (a Analysis) Update(db orm.DB, al ccvs.Analysis) error {
-	return db.Update(&al)
+func (a Analysis) Update(db orm.DB, al ccvs.Analysis) (ccvs.Analysis, error) {
+	al.UpdatedAt = time.Now()
+	_, err := db.Model(&al).WherePK().Update()
+
+	return al, err
 }
-
-
