@@ -50,6 +50,7 @@ type Vendors struct {
 
 // Clair is the struct that stores a vendor and its config
 type Clair struct {
+	URL string `yaml:"url"`
 }
 
 // AnchoreEngine is the struct that stores a vendor and its config
