@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	// "github.com/quay/claircore"
-
 	"github.com/edersonbrilhante/ccvs"
 	"github.com/edersonbrilhante/ccvs/pkg/util/config"
 	"github.com/go-resty/resty/v2"
@@ -17,9 +15,6 @@ import (
 
 	"net/http"
 	"sync"
-	// "github.com/quay/clair/v4/httptransport/client"
-	// "github.com/optiopay/klar/clair"
-	// "github.com/optiopay/klar/docker"
 )
 
 type Clair struct {
