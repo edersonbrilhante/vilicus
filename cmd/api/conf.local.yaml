@@ -15,7 +15,6 @@ vendors:
     user: admin
     as_account: admin
   clair:
-    url: 'https://localhost:6060'
-    api_version: 3      
+    url: http://localhost:6060
   trivy:
     url: http://localhost:8080
