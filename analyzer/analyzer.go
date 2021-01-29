@@ -6,8 +6,8 @@ import (
 	"github.com/edersonbrilhante/ccvs"
 	"github.com/edersonbrilhante/ccvs/pkg/util/config"
 
-	// anchoreengine "github.com/edersonbrilhante/ccvs/analyzer/anchoreengine"
-	clair "github.com/edersonbrilhante/ccvs/analyzer/clair"
+	"github.com/edersonbrilhante/ccvs/analyzer/anchoreengine"
+	"github.com/edersonbrilhante/ccvs/analyzer/clair"
 )
 
 // StartAnalysis is function to execute analysis
@@ -15,7 +15,7 @@ func StartAnalysis(v *config.Vendors, al *ccvs.Analysis) {
 	var wg sync.WaitGroup
 
 	aa := []analyzer{
-		// &anchoreengine.Anchore{Config: v.AnchoreEngine},
+		&anchoreengine.Anchore{Config: v.AnchoreEngine},
 		&clair.Clair{Config: v.Clair},
 	}
 

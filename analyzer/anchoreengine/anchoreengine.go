@@ -175,6 +175,10 @@ func (a *Anchore) addImage() ([]AnchoreImage, error) {
 		SetBody(ImageAnalysisRequest{Source: ImageSource{Tag: RegistryTagSource{Pullstring: a.analysis.Image}}}).
 		SetResult(&imgResp).
 		Post(a.Config.URL + "/images?force=true&autosubscribe=false")
+	if err != nil {
+		return imgResp, err
+	}
+
 	if len(imgResp) == 0 {
 		return imgResp, errors.New(resp.String())
 	}
