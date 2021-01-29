@@ -8,7 +8,7 @@ import (
 	"github.com/edersonbrilhante/ccvs"
 	"github.com/edersonbrilhante/ccvs/pkg/api/analysis/platform/pgsql"
 	"github.com/edersonbrilhante/ccvs/pkg/util/config"
-	"github.com/edersonbrilhante/ccvs/pkg/vendor"
+	"github.com/edersonbrilhante/ccvs/analyzer"
 )
 
 // Service represents analysis application interface
@@ -49,7 +49,7 @@ func (a Analysis) Update(c echo.Context, req ccvs.Analysis) (ccvs.Analysis, erro
 	if err != nil {
 		return req, err
 	}
-	vendor.StartAnalysis(a.vendors, &req)
+	analyzer.StartAnalysis(a.vendors, &req)
 	req.Status = "finished"
 	return a.repository.Update(a.db, req)
 }
