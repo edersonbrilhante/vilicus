@@ -48,26 +48,6 @@ func (a *Clair) Analyzer(al *ccvs.Analysis) error {
 	return nil
 }
 
-// image, err := docker.NewImage(&docker.DockerConfig{
-// 	ImageName: al.Image
-// })
-// if err != nil {
-// 	return errors.New("Can't parse qname: %s", err)
-// }
-
-// err = image.Pull()
-// if err != nil {
-// 	return errors.New("Can't pull image: %s", err)
-// }
-
-// var vs []*clair.Vulnerability
-// c := clair.NewClair(conf.ClairAddr, 3, conf.ClairTimeout)
-// vs, err = c.Analyse(image)
-// if err != nil {
-// 	return errors.New("Failed to analyze using API: %s", err)
-// }
-// a.resultRaw = vs
-
 func (a *Clair) addImage() (IndexReport, error) {
 
 	imgResp := IndexReport{}
