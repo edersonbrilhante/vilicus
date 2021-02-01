@@ -28,32 +28,32 @@ var (
 	rtMap = map[string]http.RoundTripper{}
 )
 
-func (a *Clair) Analyzer(al *ccvs.Analysis) error {
-	a.analysis = al
-	imgResp, err := a.addImage()
+func (c *Clair) Analyzer(al *ccvs.Analysis) error {
+	c.analysis = al
+	imgResp, err := c.addImage()
 	if err != nil {
 		return err
 	}
-	_, err = a.checkAnalysisStatus(imgResp)
+	_, err = c.checkAnalysisStatus(imgResp)
 	if err != nil {
 		return err
 	}
 
-	vulnResp, err := a.getVuln(imgResp)
+	vulnResp, err := c.getVuln(imgResp)
 	if err != nil {
 		return err
 	}
-	a.resultRaw = &vulnResp
+	c.resultRaw = &vulnResp
 
 	return nil
 }
 
-func (a *Clair) addImage() (IndexReport, error) {
+func (c *Clair) addImage() (IndexReport, error) {
 
 	imgResp := IndexReport{}
 
 	ctx := context.Background()
-	manifest, err := Inspect(ctx, a.analysis.Image)
+	manifest, err := Inspect(ctx, c.analysis.Image)
 	if err != nil {
 		return imgResp, err
 	}
@@ -61,7 +61,7 @@ func (a *Clair) addImage() (IndexReport, error) {
 	client := resty.New()
 	resp, err := client.R().
 		SetBody(manifest).
-		Post(a.Config.URL + "/indexer/api/v1/index_report")
+		Post(c.Config.URL + "/indexer/api/v1/index_report")
 	if err != nil {
 		return imgResp, err
 	}
@@ -70,7 +70,7 @@ func (a *Clair) addImage() (IndexReport, error) {
 	return imgResp, err
 }
 
-func (a *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
+func (c *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
 	if imgResp.State == "IndexFinished" {
 		return true, nil
 	}
@@ -82,7 +82,7 @@ func (a *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
 
 	newImgResp := IndexReport{}
 	resp, err := client.R().
-		Get(a.Config.URL + "/indexer/api/v1/index_report/" + imgResp.ManifestHash)
+		Get(c.Config.URL + "/indexer/api/v1/index_report/" + imgResp.ManifestHash)
 
 	if err == nil {
 		err = json.Unmarshal(resp.Body(), &newImgResp)
@@ -92,15 +92,15 @@ func (a *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
 		return false, err
 	}
 
-	return a.checkAnalysisStatus(newImgResp)
+	return c.checkAnalysisStatus(newImgResp)
 }
 
-func (a *Clair) getVuln(imgResp IndexReport) (VulnerabilityReport, error) {
+func (c *Clair) getVuln(imgResp IndexReport) (VulnerabilityReport, error) {
 	client := resty.New()
 
 	vulnResp := VulnerabilityReport{}
 	resp, err := client.R().
-		Get(a.Config.URL + "/matcher/api/v1/vulnerability_report/" + imgResp.ManifestHash)
+		Get(c.Config.URL + "/matcher/api/v1/vulnerability_report/" + imgResp.ManifestHash)
 	if err != nil {
 		return vulnResp, err
 	}
@@ -110,19 +110,19 @@ func (a *Clair) getVuln(imgResp IndexReport) (VulnerabilityReport, error) {
 	return vulnResp, err
 }
 
-func (a *Clair) Parser() error {
-	if a.resultRaw == nil {
+func (c *Clair) Parser() error {
+	if c.resultRaw == nil {
 		return errors.New("Result is empty")
 	}
-	fmt.Printf("%v: found %v vulns\n", a.analysis.Image, len(a.resultRaw.Vulnerabilities))
+	fmt.Printf("%v: found %v vulns\n", c.analysis.Image, len(c.resultRaw.Vulnerabilities))
 	r := ccvs.VendorResults{}
 
-	for p, vis := range a.resultRaw.PackageVulnerabilities {
+	for p, vis := range c.resultRaw.PackageVulnerabilities {
 		for _, vi := range vis {
 
-			pkg := a.resultRaw.Packages[p]
+			pkg := c.resultRaw.Packages[p]
 
-			v := a.resultRaw.Vulnerabilities[vi]
+			v := c.resultRaw.Vulnerabilities[vi]
 
 			vuln := ccvs.Vuln{
 				Fix:            v.FixedInVersion,
@@ -149,7 +149,7 @@ func (a *Clair) Parser() error {
 		}
 	}
 
-	a.analysis.Results.ClairResult = r
+	c.analysis.Results.ClairResult = r
 
 	return nil
 }
