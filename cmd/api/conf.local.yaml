@@ -1,21 +1,21 @@
 database:
-  log_queries: true
+  log_queries: false
   timeout_seconds: 5
 
 server:
   port: :8080
-  debug: true
+  debug: false
   read_timeout_seconds: 10
   write_timeout_seconds: 5
 
 vendors:
   anchore_engine:
-    url: http://localhost:8228
+    url: http://anchore:8228
     pass: foobar
     user: admin
     as_account: admin
   clair:
-    url: http://localhost:6060
+    url: http://clair:6060
   trivy:
-    url: http://localhost:8080
-    timeout_seconds: 10000
+    url: http://trivy:8080
+    timeout_seconds: 3600
