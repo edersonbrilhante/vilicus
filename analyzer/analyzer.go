@@ -8,6 +8,7 @@ import (
 
 	"github.com/edersonbrilhante/ccvs/analyzer/anchoreengine"
 	"github.com/edersonbrilhante/ccvs/analyzer/clair"
+	"github.com/edersonbrilhante/ccvs/analyzer/trivy"
 )
 
 // StartAnalysis is function to execute analysis
@@ -17,6 +18,7 @@ func StartAnalysis(v *config.Vendors, al *ccvs.Analysis) {
 	aa := []analyzer{
 		&anchoreengine.Anchore{Config: v.AnchoreEngine},
 		&clair.Clair{Config: v.Clair},
+		&trivy.Trivy{Config: v.Trivy},
 	}
 
 	for _, a := range aa {
