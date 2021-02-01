@@ -63,4 +63,6 @@ type AnchoreEngine struct {
 
 // Trivy is the struct that stores a vendor and its config
 type Trivy struct {
+	URL     string `yaml:"url"`
+	Timeout string `yaml:"timeout_seconds"`
 }

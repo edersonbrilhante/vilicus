@@ -18,3 +18,4 @@ vendors:
     url: http://localhost:6060
   trivy:
     url: http://localhost:8080
+    timeout_seconds: 10000
