@@ -10,7 +10,7 @@ server:
 
 vendors:
   anchore_engine:
-    url: http://anchore:8228
+    url: http://anchore_engine:8228
     pass: foobar
     user: admin
     as_account: admin
