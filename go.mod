@@ -1,8 +1,10 @@
 module github.com/edersonbrilhante/ccvs
 
-go 1.14
+go 1.15
 
 require (
+	github.com/aquasecurity/fanal v0.0.0-20210119051230-28c249da7cfd
+	github.com/aquasecurity/trivy v0.15.0
 	github.com/go-pg/pg/v10 v10.7.4
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-resty/resty/v2 v2.4.0
@@ -11,5 +13,6 @@ require (
 	github.com/lib/pq v1.9.0
 	github.com/quay/claircore v1.0.5
 	github.com/rs/zerolog v1.20.0
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 	gopkg.in/yaml.v2 v2.4.0
 )
