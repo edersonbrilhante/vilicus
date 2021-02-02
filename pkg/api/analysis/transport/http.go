@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/edersonbrilhante/ccvs"
-	"github.com/edersonbrilhante/ccvs/pkg/api/analysis"
+	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/api/analysis"
 )
 
 // Analysis create request
@@ -35,7 +35,7 @@ func (h HTTP) create(c echo.Context) error {
 		return err
 	}
 
-	al, err := h.svc.Create(c, ccvs.Analysis{
+	al, err := h.svc.Create(c, vilicus.Analysis{
 		Image: req.Image,
 	})
 

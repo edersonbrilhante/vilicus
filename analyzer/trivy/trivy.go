@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edersonbrilhante/ccvs"
-	"github.com/edersonbrilhante/ccvs/pkg/util/config"
+	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
 	"golang.org/x/xerrors"
 
@@ -23,12 +23,12 @@ import (
 type Trivy struct {
 	Config    *config.Trivy
 	resultRaw *report.Results
-	analysis  *ccvs.Analysis
+	analysis  *vilicus.Analysis
 }
 
 type RemoteURL string
 
-func (t *Trivy) Analyzer(al *ccvs.Analysis) error {
+func (t *Trivy) Analyzer(al *vilicus.Analysis) error {
 	ctx := context.Background()
 	t.analysis = al
 	scanner, cleanup, err := t.dockerScanner(ctx)
@@ -56,11 +56,11 @@ func (t *Trivy) Parser() error {
 		return xerrors.Errorf("Result is empty")
 	}
 
-	r := ccvs.VendorResults{}
+	r := vilicus.VendorResults{}
 	for _, res := range *t.resultRaw {
 		for _, v := range res.Vulnerabilities {
 
-			vuln := ccvs.Vuln{
+			vuln := vilicus.Vuln{
 				Fix:            v.FixedVersion,
 				URL:            strings.Join(v.References, ", "),
 				Name:           v.VulnerabilityID,

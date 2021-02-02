@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/edersonbrilhante/ccvs"
-	"github.com/edersonbrilhante/ccvs/pkg/util/config"
+	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -105,10 +105,10 @@ type Vulnerabilities struct {
 type Anchore struct {
 	Config    *config.AnchoreEngine
 	resultRaw *VulnerabilityResponse
-	analysis  *ccvs.Analysis
+	analysis  *vilicus.Analysis
 }
 
-func (a *Anchore) Analyzer(al *ccvs.Analysis) error {
+func (a *Anchore) Analyzer(al *vilicus.Analysis) error {
 	a.analysis = al
 	imgResp, err := a.addImage()
 	if err != nil {
@@ -133,10 +133,10 @@ func (a *Anchore) Parser() error {
 	if a.resultRaw == nil {
 		return errors.New("Result is empty")
 	}
-	r := ccvs.VendorResults{}
+	r := vilicus.VendorResults{}
 	for _, v := range a.resultRaw.Vulnerabilities {
 
-		vuln := ccvs.Vuln{
+		vuln := vilicus.Vuln{
 			Fix:            v.Fix,
 			URL:            v.URL,
 			Name:           v.Vuln,

@@ -1,4 +1,4 @@
-package ccvs
+package vilicus
 
 import (
 	"fmt"
@@ -14,10 +14,10 @@ type Analysis struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"updated_at,notnull,default:now()"`
 	Result    string    `json:"result,omitempty" pg:"result"`
 	Errors    []string  `json:"errors,omitempty" pg:"errors"`
-	Results   Results   `json:"ccvs_results,omitempty" pg:"ccvs_results"`
+	Results   Results   `json:"vilicus_results,omitempty" pg:"vilicus_results"`
 }
 
-// Results is a struct that represents ccvs scan results.
+// Results is a struct that represents vilicus scan results.
 type Results struct {
 	ClairResult         VendorResults `json:"clair,omitempty"`
 	AnchoreEngineResult VendorResults `json:"anchore_engine,omitempty"`

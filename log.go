@@ -1,4 +1,4 @@
-package ccvs
+package vilicus
 
 import "github.com/labstack/echo/v4"
 

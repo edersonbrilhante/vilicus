@@ -1,4 +1,4 @@
-module github.com/edersonbrilhante/ccvs
+module github.com/edersonbrilhante/vilicus
 
 go 1.15
 

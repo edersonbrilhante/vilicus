@@ -3,16 +3,16 @@ package analyzer
 import (
 	"sync"
 
-	"github.com/edersonbrilhante/ccvs"
-	"github.com/edersonbrilhante/ccvs/pkg/util/config"
+	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
-	"github.com/edersonbrilhante/ccvs/analyzer/anchoreengine"
-	"github.com/edersonbrilhante/ccvs/analyzer/clair"
-	"github.com/edersonbrilhante/ccvs/analyzer/trivy"
+	"github.com/edersonbrilhante/vilicus/analyzer/anchoreengine"
+	"github.com/edersonbrilhante/vilicus/analyzer/clair"
+	"github.com/edersonbrilhante/vilicus/analyzer/trivy"
 )
 
 // StartAnalysis is function to execute analysis
-func StartAnalysis(v *config.Vendors, al *ccvs.Analysis) {
+func StartAnalysis(v *config.Vendors, al *vilicus.Analysis) {
 	var wg sync.WaitGroup
 
 	aa := []analyzer{
@@ -30,11 +30,11 @@ func StartAnalysis(v *config.Vendors, al *ccvs.Analysis) {
 }
 
 type analyzer interface {
-	Analyzer(*ccvs.Analysis) error
+	Analyzer(*vilicus.Analysis) error
 	Parser() error
 }
 
-func start(v analyzer, al *ccvs.Analysis, wg *sync.WaitGroup) {
+func start(v analyzer, al *vilicus.Analysis, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	err := v.Analyzer(al)

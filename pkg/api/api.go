@@ -3,20 +3,20 @@ package api
 import (
 	"os"
 
-	"github.com/edersonbrilhante/ccvs/pkg/api/analysis"
-	al "github.com/edersonbrilhante/ccvs/pkg/api/analysis/logging"
-	at "github.com/edersonbrilhante/ccvs/pkg/api/analysis/transport"
-	"github.com/edersonbrilhante/ccvs/pkg/util/config"
-	"github.com/edersonbrilhante/ccvs/pkg/util/postgres"
-	"github.com/edersonbrilhante/ccvs/pkg/util/server"
-	"github.com/edersonbrilhante/ccvs/pkg/util/zlog"
+	"github.com/edersonbrilhante/vilicus/pkg/api/analysis"
+	al "github.com/edersonbrilhante/vilicus/pkg/api/analysis/logging"
+	at "github.com/edersonbrilhante/vilicus/pkg/api/analysis/transport"
+	"github.com/edersonbrilhante/vilicus/pkg/util/config"
+	"github.com/edersonbrilhante/vilicus/pkg/util/postgres"
+	"github.com/edersonbrilhante/vilicus/pkg/util/server"
+	"github.com/edersonbrilhante/vilicus/pkg/util/zlog"
 )
 
 // Start starts the API service
 func Start(cfg *config.Configuration) error {
 
 	// // db connection
-	// postgresql://ccvsuser:ccvspwd@localhost/ccvs
+	// postgresql://vilicususer:vilicuspwd@localhost/vilicus
 	db, err := postgres.New(os.Getenv("DATABASE_URL"), cfg.DB.Timeout, cfg.DB.LogQueries)
 	if err != nil {
 		return err

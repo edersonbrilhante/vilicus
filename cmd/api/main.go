@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 
-	"github.com/edersonbrilhante/ccvs/pkg/api"
-	"github.com/edersonbrilhante/ccvs/pkg/util/config"
+	"github.com/edersonbrilhante/vilicus/pkg/api"
+	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 )
 
 func main() {
