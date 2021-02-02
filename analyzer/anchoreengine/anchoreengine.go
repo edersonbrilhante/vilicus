@@ -138,7 +138,7 @@ func (a *Anchore) Parser() error {
 
 		vuln := vilicus.Vuln{
 			Fix:            v.Fix,
-			URL:            v.URL,
+			URL:            []string{v.URL},
 			Name:           v.Vuln,
 			Severity:       v.Severity,
 			PackageName:    v.PackageName,

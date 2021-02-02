@@ -62,7 +62,7 @@ func (t *Trivy) Parser() error {
 
 			vuln := vilicus.Vuln{
 				Fix:            v.FixedVersion,
-				URL:            strings.Join(v.References, ", "),
+				URL:            v.References,
 				Name:           v.VulnerabilityID,
 				Severity:       strings.Title(strings.ToLower(v.Severity)),
 				PackageName:    v.PkgName,

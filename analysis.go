@@ -44,12 +44,12 @@ func (v VendorResults) String() string {
 
 // Vuln is the struct that stores vulnerability information.
 type Vuln struct {
-	Fix            string `json:"fix"`
-	URL            string `json:"url"`
-	Name           string `json:"name"`
-	Severity       string `json:"severity"`
-	PackageName    string `json:"package_name"`
-	PackageVersion string `json:"package_version"`
+	Fix            string   `json:"fix"`
+	URL            []string `json:"urls"`
+	Name           string   `json:"name"`
+	Severity       string   `json:"severity"`
+	PackageName    string   `json:"package_name"`
+	PackageVersion string   `json:"package_version"`
 }
 
 func (v Vuln) String() string {

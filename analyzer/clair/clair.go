@@ -126,7 +126,7 @@ func (c *Clair) Parser() error {
 
 			vuln := vilicus.Vuln{
 				Fix:            v.FixedInVersion,
-				URL:            strings.ReplaceAll(v.Links, " ", ", "),
+				URL:            strings.Split(v.Links, " "),
 				Name:           v.Name,
 				Severity:       v.NormalizedSeverity,
 				PackageName:    pkg.Name,
