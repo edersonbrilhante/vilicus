@@ -8,7 +8,7 @@ import (
 	"github.com/edersonbrilhante/vilicus"
 	"github.com/edersonbrilhante/vilicus/pkg/api/analysis/platform/pgsql"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
-	"github.com/edersonbrilhante/vilicus/analyzer"
+	"github.com/edersonbrilhante/vilicus/pkg/analyzer"
 )
 
 // Service represents analysis application interface
