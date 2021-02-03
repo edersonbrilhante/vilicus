@@ -1,5 +1,8 @@
 # Vilicus
 
+## Architecture
+![Kiku](docs/arch.gif)
+
 ## Run locally
 ```bash
 docker-compose -f local-dev/docker-compose.yaml up -d
