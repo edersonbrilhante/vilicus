@@ -5,7 +5,7 @@
 
 ## Run locally
 ```bash
-docker-compose -f local-dev/docker-compose.yaml up -d
+docker-compose -f deployments/docker-compose.yaml up -d
 ```
 
 ## Example of analysis

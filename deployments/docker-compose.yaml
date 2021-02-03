@@ -7,7 +7,7 @@ services:
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     build:
       context: ../
-      dockerfile: local-dev/vilicus/Dockerfile
+      dockerfile: deployments/vilicus/Dockerfile
     command: sh -c "go run cmd/migration/main.go && go run cmd/api/main.go"
     ports:
       - "8040:8080"
@@ -33,7 +33,7 @@ services:
       POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
     build:
       context: ../
-      dockerfile: local-dev/postgres/Dockerfile
+      dockerfile: deployments/postgres/Dockerfile
     ports:
       - "5432"
     networks:
@@ -56,7 +56,7 @@ services:
       ANCHORE_HINTS_ENABLED: "False"
     build:
       context: ../
-      dockerfile: local-dev/anchore/Dockerfile
+      dockerfile: deployments/anchore/Dockerfile
     ports:
       - "8041:8228"
     logging:
@@ -84,7 +84,7 @@ services:
       CLAIR_MODE: combo
     build:
       context: ../
-      dockerfile: local-dev/clair/Dockerfile
+      dockerfile: deployments/clair/Dockerfile
     ports:
       - "8043:6060"
     networks:
