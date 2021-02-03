@@ -26,7 +26,9 @@ docker-compose -f local-dev/docker-compose.yaml up -d
         "clair": {
           "unknown_vulns": [{
             "fix": "0:0",
-            "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0501",
+            "urls": [
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0501"
+            ],
             "name": "CVE-2018-0501",
             "severity": "Unknown",
             "package_name": "apt",
@@ -36,7 +38,9 @@ docker-compose -f local-dev/docker-compose.yaml up -d
         "anchore_engine ": {
           "high_vulns": [{
               "fix": "None",
-              "url": "https://security-tracker.debian.org/tracker/CVE-2020-27843",
+              "urls": [
+                "https://security-tracker.debian.org/tracker/CVE-2020-27843"
+              ],
               "name": "CVE-2020-27843",
               "severity": "High",
               "package_name": "libopenjp2-7",
@@ -47,7 +51,9 @@ docker-compose -f local-dev/docker-compose.yaml up -d
         "trivy": {
           "high_vulns": [{
               "fix": "",
-              "url": "https://gcc.gnu.org/viewcvs/gcc/trunk/gcc/config/arm/arm-protos.h?revision=266379&view=markup",
+              "urls": [
+                "https://gcc.gnu.org/viewcvs/gcc/trunk/gcc/config/arm/arm-protos.h?revision=266379&view=markup"
+              ],
               "name": "CVE-2018-12886",
               "severity": "High",
               "package_name": "cpp-6",
