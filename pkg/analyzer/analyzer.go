@@ -3,7 +3,7 @@ package analyzer
 import (
 	"sync"
 
-	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/types"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
 	"github.com/edersonbrilhante/vilicus/pkg/analyzer/anchoreengine"
@@ -12,7 +12,7 @@ import (
 )
 
 // StartAnalysis is function to execute analysis
-func StartAnalysis(v *config.Vendors, al *vilicus.Analysis) {
+func StartAnalysis(v *config.Vendors, al *types.Analysis) {
 	var wg sync.WaitGroup
 
 	aa := []analyzer{
@@ -30,11 +30,11 @@ func StartAnalysis(v *config.Vendors, al *vilicus.Analysis) {
 }
 
 type analyzer interface {
-	Analyzer(*vilicus.Analysis) error
+	Analyzer(*types.Analysis) error
 	Parser() error
 }
 
-func start(v analyzer, al *vilicus.Analysis, wg *sync.WaitGroup) {
+func start(v analyzer, al *types.Analysis, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	err := v.Analyzer(al)

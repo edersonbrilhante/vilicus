@@ -1,4 +1,4 @@
-package vilicus
+package types
 
 import (
 	"fmt"

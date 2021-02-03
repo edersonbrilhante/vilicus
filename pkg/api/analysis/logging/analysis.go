@@ -5,12 +5,13 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/edersonbrilhante/vilicus"
 	"github.com/edersonbrilhante/vilicus/pkg/api/analysis"
+	"github.com/edersonbrilhante/vilicus/pkg/log"
+	"github.com/edersonbrilhante/vilicus/pkg/types"
 )
 
 // New creates new analysis logging service
-func New(svc analysis.Service, logger vilicus.Logger) *LogService {
+func New(svc analysis.Service, logger log.Logger) *LogService {
 	return &LogService{
 		Service: svc,
 		logger:  logger,
@@ -20,13 +21,13 @@ func New(svc analysis.Service, logger vilicus.Logger) *LogService {
 // LogService represents analysis logging service
 type LogService struct {
 	analysis.Service
-	logger vilicus.Logger
+	logger log.Logger
 }
 
 const name = "analysis"
 
 // Create logging
-func (ls *LogService) Create(c echo.Context, req vilicus.Analysis) (resp vilicus.Analysis, err error) {
+func (ls *LogService) Create(c echo.Context, req types.Analysis) (resp types.Analysis, err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
@@ -42,7 +43,7 @@ func (ls *LogService) Create(c echo.Context, req vilicus.Analysis) (resp vilicus
 }
 
 // Update logging
-func (ls *LogService) Update(c echo.Context, req vilicus.Analysis) (resp vilicus.Analysis, err error) {
+func (ls *LogService) Update(c echo.Context, req types.Analysis) (resp types.Analysis, err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,

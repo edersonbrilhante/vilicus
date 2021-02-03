@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/types"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
 	"golang.org/x/xerrors"
@@ -13,22 +13,22 @@ import (
 	aimage "github.com/aquasecurity/fanal/artifact/image"
 	"github.com/aquasecurity/fanal/image"
 	"github.com/aquasecurity/trivy/pkg/cache"
-	"github.com/aquasecurity/trivy/pkg/report"
 	"github.com/aquasecurity/trivy/pkg/log"
+	"github.com/aquasecurity/trivy/pkg/report"
 	"github.com/aquasecurity/trivy/pkg/rpc/client"
 	"github.com/aquasecurity/trivy/pkg/scanner"
-	"github.com/aquasecurity/trivy/pkg/types"
+	ttrivy "github.com/aquasecurity/trivy/pkg/types"
 )
 
 type Trivy struct {
 	Config    *config.Trivy
 	resultRaw *report.Results
-	analysis  *vilicus.Analysis
+	analysis  *types.Analysis
 }
 
 type RemoteURL string
 
-func (t *Trivy) Analyzer(al *vilicus.Analysis) error {
+func (t *Trivy) Analyzer(al *types.Analysis) error {
 	ctx := context.Background()
 	t.analysis = al
 	scanner, cleanup, err := t.dockerScanner(ctx)
@@ -37,7 +37,7 @@ func (t *Trivy) Analyzer(al *vilicus.Analysis) error {
 	}
 	defer cleanup()
 
-	scanOptions := types.ScanOptions{
+	scanOptions := ttrivy.ScanOptions{
 		VulnType:            []string{"os", "library"},
 		ScanRemovedPackages: false,
 	}
@@ -56,11 +56,11 @@ func (t *Trivy) Parser() error {
 		return xerrors.Errorf("Result is empty")
 	}
 
-	r := vilicus.VendorResults{}
+	r := types.VendorResults{}
 	for _, res := range *t.resultRaw {
 		for _, v := range res.Vulnerabilities {
 
-			vuln := vilicus.Vuln{
+			vuln := types.Vuln{
 				Fix:            v.FixedVersion,
 				URL:            v.References,
 				Name:           v.VulnerabilityID,
@@ -93,11 +93,11 @@ func (t *Trivy) Parser() error {
 }
 
 func (t *Trivy) dockerScanner(ctx context.Context) (scanner.Scanner, func(), error) {
-	log.InitLogger(false, true);
+	log.InitLogger(false, true)
 	customheaders := client.CustomHeaders{}
 	scannerScanner := client.NewProtobufClient(client.RemoteURL(t.Config.URL))
 	clientScanner := client.NewScanner(customheaders, scannerScanner)
-	dockerOption, err := types.GetDockerOption(time.Duration(t.Config.Timeout) * time.Second)
+	dockerOption, err := ttrivy.GetDockerOption(time.Duration(t.Config.Timeout) * time.Second)
 	if err != nil {
 		return scanner.Scanner{}, nil, err
 	}

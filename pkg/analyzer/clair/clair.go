@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/types"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 	"github.com/go-resty/resty/v2"
 
@@ -20,7 +20,7 @@ import (
 type Clair struct {
 	Config    *config.Clair
 	resultRaw *VulnerabilityReport
-	analysis  *vilicus.Analysis
+	analysis  *types.Analysis
 }
 
 var (
@@ -28,7 +28,7 @@ var (
 	rtMap = map[string]http.RoundTripper{}
 )
 
-func (c *Clair) Analyzer(al *vilicus.Analysis) error {
+func (c *Clair) Analyzer(al *types.Analysis) error {
 	c.analysis = al
 	imgResp, err := c.addImage()
 	if err != nil {
@@ -115,7 +115,7 @@ func (c *Clair) Parser() error {
 		return errors.New("Result is empty")
 	}
 	fmt.Printf("%v: found %v vulns\n", c.analysis.Image, len(c.resultRaw.Vulnerabilities))
-	r := vilicus.VendorResults{}
+	r := types.VendorResults{}
 
 	for p, vis := range c.resultRaw.PackageVulnerabilities {
 		for _, vi := range vis {
@@ -124,7 +124,7 @@ func (c *Clair) Parser() error {
 
 			v := c.resultRaw.Vulnerabilities[vi]
 
-			vuln := vilicus.Vuln{
+			vuln := types.Vuln{
 				Fix:            v.FixedInVersion,
 				URL:            strings.Split(v.Links, " "),
 				Name:           v.Name,

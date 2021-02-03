@@ -1,4 +1,4 @@
-package vilicus
+package log
 
 import "github.com/labstack/echo/v4"
 

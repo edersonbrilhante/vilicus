@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/edersonbrilhante/vilicus"
+	"github.com/edersonbrilhante/vilicus/pkg/types"
 	"github.com/edersonbrilhante/vilicus/pkg/util/postgres"
 
 	"github.com/go-pg/pg/v10"
@@ -27,7 +27,7 @@ func checkErr(err error) {
 
 func createSchema(db *pg.DB) error {
 	models := []interface{}{
-		(*vilicus.Analysis)(nil),
+		(*types.Analysis)(nil),
 	}
 
 	_, err := db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\" WITH SCHEMA public")
