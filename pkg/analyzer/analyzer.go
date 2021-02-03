@@ -6,9 +6,9 @@ import (
 	"github.com/edersonbrilhante/vilicus"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
-	"github.com/edersonbrilhante/vilicus/analyzer/anchoreengine"
-	"github.com/edersonbrilhante/vilicus/analyzer/clair"
-	"github.com/edersonbrilhante/vilicus/analyzer/trivy"
+	"github.com/edersonbrilhante/vilicus/pkg/analyzer/anchoreengine"
+	"github.com/edersonbrilhante/vilicus/pkg/analyzer/clair"
+	"github.com/edersonbrilhante/vilicus/pkg/analyzer/trivy"
 )
 
 // StartAnalysis is function to execute analysis
