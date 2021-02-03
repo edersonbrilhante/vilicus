@@ -15,8 +15,7 @@ import (
 // Start starts the API service
 func Start(cfg *config.Configuration) error {
 
-	// // db connection
-	// postgresql://vilicususer:vilicuspwd@localhost/vilicus
+	// db connection
 	db, err := postgres.New(os.Getenv("DATABASE_URL"), cfg.DB.Timeout, cfg.DB.LogQueries)
 	if err != nil {
 		return err
