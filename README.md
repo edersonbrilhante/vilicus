@@ -12,10 +12,10 @@
 ---
 
 ## Overview
-Vilicus is an open source tool that orchestrates security scans in docker images and centralizes all results into a database for further analysis and metrics. It can perform using Anchore[https://github.com/anchore/anchore-engine], Clair[https://github.com/quay/clair] and Trivy[https://github.com/aquasecurity/trivy]
+Vilicus is an open source tool that orchestrates security scans of container images(docker/oci) and centralizes all results into a database for further analysis and metrics. It can perform using Anchore[https://github.com/anchore/anchore-engine], Clair[https://github.com/quay/clair] and Trivy[https://github.com/aquasecurity/trivy]
 
 ### How does it work?
-There many tools to scan docker images, but sometimes the results can be diferent in each one them. So the main goal of this project is to help development teams improve the quality of their docker images by finding vulnerabilities and thus addressing them with anagnostic sight from vendors.
+There many tools to scan container images, but sometimes the results can be diferent in each one them. So the main goal of this project is to help development teams improve the quality of their container images by finding vulnerabilities and thus addressing them with anagnostic sight from vendors.
 
 **Here you can find articles comparing the scanning tools**:
 - [Open Source CVE Scanner Round-Up: Clair vs Anchore vs Trivy](https://boxboat.com/2020/04/24/image-scanning-tech-compared/)
