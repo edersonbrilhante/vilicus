@@ -40,7 +40,7 @@ docker-compose -f deployments/docker-compose.yaml up -d
 
 ### Example of analysis
 ```bash
- curl -XPOST 'http://localhost:8040/container-scanning/analysis' \
+ curl -XPOST 'http://localhost:8040/analysis' \
 -H 'Content-Type: application/json' \
 -d '{"image":"node"}'
 ```

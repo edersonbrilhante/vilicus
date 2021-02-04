@@ -24,7 +24,7 @@ func Start(cfg *config.Configuration) error {
 	log := zlog.New()
 
 	e := server.New()
-	v1 := e.Group("/container-scanning")
+	v1 := e.Group("")
 
 	at.NewHTTP(al.New(analysis.Initialize(db, cfg.Vendors), log), v1)
 

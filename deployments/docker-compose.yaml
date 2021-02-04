@@ -39,6 +39,17 @@ services:
     networks:
       - vilicus_net
 
+  # pre-set database 
+  # postgres:
+  #   container_name: vilicus_postgres
+  #   image: edersonbrilhante/vilicus-cached-database:dev
+  #   environment:
+  #     PGDATA: postgres
+  #   ports:
+  #     - "5432"
+  #   networks:
+  #     - vilicus_net
+
   anchore_engine:
     container_name: anchore_engine
     command: anchore-manager service start --all
