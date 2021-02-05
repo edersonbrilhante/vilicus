@@ -16,9 +16,10 @@ before_install:
 
 before_script:
   - docker-compose -f deployments/docker-compose.yml up -d
+  - curl -o /tmp/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
 
 script: |-
-    docker run willwill/wait-for-it  http://localhost:8040 -- curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'    
+  /tmp/wait-for-it.sh http://localhost:8040 -- curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'    
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
