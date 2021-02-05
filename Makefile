@@ -12,7 +12,6 @@ VILICUS_MIGRATION_BIN ?= vilicus-migration-bin
 CMD_API ?= ./cmd/api/main.go
 CMD_MIGRATION ?= ./cmd/migration/main.go
 
-
 COLOR_RESET=\033[0;39;49m
 COLOR_BOLD=\033[1m
 COLOR_ULINE=\033[4m
@@ -30,11 +29,10 @@ COLOR_WHIT=\033[38;5;15m
 
 PROJECT := Vilicus
 
-
 TAG := $(shell git rev-parse --abbrev-ref HEAD)
 DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 COMMIT := $(shell git rev-parse $(TAG))
-LDFLAGS := '-X "main.version=$(TAG)" -X "main.commit=$(COMMIT)" -X "main.date=$(DATE)"'
+LDFLAGS := '-X "main.version=$(TAG)" -X "main.commit=$(COMMIT)" -X "main.date=$(DATE)" -w -s'
 
 ## Builds all project binaries
 build: build-api build-migration
@@ -46,13 +44,18 @@ build-linux: build-api-linux build-migration-linux
 build-api:
 	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
 
-## Builds API migration code into a binary
-build-migration:
-	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
-
 ## Builds API code using linux architecture into a binary
 build-api-linux:
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
+
+## Builds all image locally with the latest tags
+build-images:
+	chmod +x scripts/build-images.sh
+	./scripts/build-images.sh
+
+## Builds API migration code into a binary
+build-migration:
+	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
 
 ## Builds API migration code using linux architecture into a binary
 build-migration-linux:
@@ -69,8 +72,7 @@ check-sec:
 
 ## Composes Vilicus environment using docker-compose
 compose:
-	docker-compose -f deployments/docker-compose.yml down -v --remove-orphans
-	docker-compose -f deployments/docker-compose.yml up -d --build --force-recreate
+	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
 
 ## Prints help message
 help:
@@ -91,3 +93,10 @@ lint:
 	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
 	$(GOLINT) ./...
 
+## Push images to hub.docker
+push-images:
+	chmod +x scripts/push-images.sh
+	./scripts/push-images.sh
+
+## Builds and push images with the latest tags
+update-images: build-images push-images
