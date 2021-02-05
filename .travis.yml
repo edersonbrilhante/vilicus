@@ -13,6 +13,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
+  - docker load -i docker_images/images.tar || true
   - docker-compose -f deployments/docker-compose.yml up -d
   - sleep 120 # temp fix
   - docker-compose -f deployments/docker-compose.yml up -d # temp fix
@@ -23,3 +24,10 @@ script: |-
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
+
+cache:
+  directories:
+  - docker_images
+
+before_cache:
+- docker save -o docker_images/images.tar $(docker images -a -q)
