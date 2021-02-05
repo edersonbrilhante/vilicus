@@ -13,11 +13,12 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker-compose -f deployments/dbcached.docker-compose.yml up -d
+  - make compose
+  - sleep 200 # temp fix
+  - make compose # temp fix
 
 script:
   - curl --location --request POST http://localhost:8040/analysis
-  - docker-compose -f deployments/dbcached.docker-compose.yml logs vilicus
 
 after_script:
-  - docker-compose -f deployments/dbcached.docker-compose.yml down
+  - docker-compose -f deployments/docker-compose.yml down
