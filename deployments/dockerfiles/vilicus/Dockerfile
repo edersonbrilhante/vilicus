@@ -21,5 +21,3 @@ USER nobody:nobody
 COPY --from=builder /build/vilicus-api-bin /bin/vilicus-api
 COPY --from=builder /build/vilicus-migration-bin /bin/vilicus-migration
 COPY --from=builder /build/cmd/api/conf.local.yaml /run/conf.yaml
-
-CMD [ "sh -c 'vilicus-migration && vilicus-api -p /run/conf.yaml'" ]
