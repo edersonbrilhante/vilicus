@@ -93,7 +93,10 @@ func (t *Trivy) Parser() error {
 }
 
 func (t *Trivy) dockerScanner(ctx context.Context) (scanner.Scanner, func(), error) {
-	log.InitLogger(false, true)
+	err := log.InitLogger(false, true)
+	if err != nil {
+		return scanner.Scanner{}, nil, err
+	}
 	customheaders := client.CustomHeaders{}
 	scannerScanner := client.NewProtobufClient(client.RemoteURL(t.Config.URL))
 	clientScanner := client.NewScanner(customheaders, scannerScanner)

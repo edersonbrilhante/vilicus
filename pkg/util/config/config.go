@@ -3,13 +3,14 @@ package config
 import (
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
 
 // Load returns Configuration struct
 func Load(path string) (*Configuration, error) {
-	bytes, err := ioutil.ReadFile(path)
+	bytes, err := ioutil.ReadFile(filepath.Clean(path))
 	if err != nil {
 		return nil, fmt.Errorf("error reading config file, %s", err)
 	}

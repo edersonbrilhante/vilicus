@@ -112,7 +112,10 @@ func Inspect(ctx context.Context, r string) (*claircore.Manifest, error) {
 		if err != nil {
 			return nil, err
 		}
-		res.Body.Close()
+		err = res.Body.Close()
+		if err != nil {
+			return nil, err
+		}
 
 		res.Request.Header.Del("User-Agent")
 		out.Layers = append(out.Layers, &claircore.Layer{
