@@ -14,12 +14,12 @@ before_install:
 
 before_script:
   - docker-compose -f deployments/docker-compose.yml up -d
-  - sleep 200 # temp fix
+  - sleep 120 # temp fix
   - docker-compose -f deployments/docker-compose.yml up -d # temp fix
   - docker ps
 
-script:
-  - curl --location --request POST http://localhost:8040/analysis
+script: |-
+    curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
