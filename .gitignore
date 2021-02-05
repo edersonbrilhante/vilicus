@@ -1,3 +1,5 @@
 .vscode
-
 .DS_Store
+
+vilicus-api-bin
+vilicus-migration-bin
