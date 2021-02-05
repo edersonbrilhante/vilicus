@@ -5,6 +5,8 @@ services:
 
 env:
   DOCKER_COMPOSE_VERSION: 1.23.2
+  DOCKER_CLIENT_TIMEOUT: 120
+  COMPOSE_HTTP_TIMEOUT: 120
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -13,15 +15,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker load -i docker_images/images.tar || true
   - docker-compose -f deployments/docker-compose.yml up -d
-  - sleep 120 # temp fix
-  - docker-compose -f deployments/docker-compose.yml up -d # temp fix
-  - docker ps
-  - docker logs vilicus
 
 script: |-
-    curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'
+    docker run willwill/wait-for-it  http://localhost:8040 -- curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'    
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down

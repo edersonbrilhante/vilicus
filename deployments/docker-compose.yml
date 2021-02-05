@@ -15,6 +15,7 @@ services:
         max-size: 100m
     networks:
       - vilicus_net
+    restart: on-failure
     depends_on:
       - postgres
       - anchore_engine
@@ -55,6 +56,7 @@ services:
         max-size: 100m
     networks:
       - vilicus_net
+    restart: on-failure
     depends_on:
       - postgres
 
@@ -77,6 +79,7 @@ services:
       - "8043:6060"
     networks:
       - vilicus_net
+    restart: on-failure
     depends_on:
       - postgres
 
@@ -87,6 +90,7 @@ services:
       - "8044:8080"
     networks:
       - vilicus_net
+    restart: on-failure
     depends_on:
       - postgres
 
