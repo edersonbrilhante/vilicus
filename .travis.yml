@@ -13,13 +13,13 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - make compose
+  - docker-compose -f deployments/docker-compose.yml up -d
   - sleep 200 # temp fix
-  - make compose # temp fix
+  - docker-compose -f deployments/docker-compose.yml up -d # temp fix
+  - docker ps
 
 script:
   - curl --location --request POST http://localhost:8040/analysis
-  - docker ps
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
