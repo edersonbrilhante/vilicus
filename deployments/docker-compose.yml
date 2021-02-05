@@ -5,14 +5,9 @@ services:
     environment:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
-    build:
-      context: ../
-      dockerfile: deployments/vilicus/Dockerfile
-    command: sh -c "go run cmd/migration/main.go && go run cmd/api/main.go"
+    image: vilicus/vilicus:latest
     ports:
       - "8040:8080"
-    volumes:
-        - "../:/go/src/github.com/edersonbrilhnte/vilicus"
     logging:
       driver: "json-file"
       options:
@@ -27,28 +22,13 @@ services:
 
   postgres:
     container_name: vilicus_postgres
+    image: vilicus/database-presets:dev
     environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
-    build:
-      context: ../
-      dockerfile: deployments/postgres/Dockerfile
+      PGDATA: postgres
     ports:
       - "5432"
     networks:
       - vilicus_net
-
-  # pre-set database 
-  # postgres:
-  #   container_name: vilicus_postgres
-  #   image: edersonbrilhante/vilicus-cached-database:dev
-  #   environment:
-  #     PGDATA: postgres
-  #   ports:
-  #     - "5432"
-  #   networks:
-  #     - vilicus_net
 
   anchore_engine:
     container_name: anchore_engine
@@ -63,11 +43,9 @@ services:
       ANCHORE_DB_PORT: 5432
       ANCHORE_ENDPOINT_HOSTNAME: localhost
       ANCHORE_ENDPOINT_PORT: 8228
-      ANCHORE_MAX_COMPRESSED_IMAGE_SIZE_MB: 700
+      ANCHORE_MAX_COMPRESSED_IMAGE_SIZE_MB: -1
       ANCHORE_HINTS_ENABLED: "False"
-    build:
-      context: ../
-      dockerfile: deployments/anchore/Dockerfile
+    image: vilicus/anchore:latest
     ports:
       - "8041:8228"
     logging:
@@ -80,9 +58,9 @@ services:
       - postgres
 
   trivy:
-    image: aquasec/trivy
     container_name: trivy
-    command: "server --debug  --listen 0.0.0.0:8080"
+    command: "server --listen 0.0.0.0:8080"
+    image: vilicus/trivy:latest
     ports:
       - "8042:8080"
     networks:
@@ -93,9 +71,7 @@ services:
     environment:
       CLAIR_CONF: /tmp/config.yaml
       CLAIR_MODE: combo
-    build:
-      context: ../
-      dockerfile: deployments/clair/Dockerfile
+    image: vilicus/clair:latest
     ports:
       - "8043:6060"
     networks:
