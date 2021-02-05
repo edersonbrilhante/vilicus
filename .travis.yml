@@ -13,11 +13,11 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker-compose -f deployments/docker-compose.dbcached.yaml up -d
+  - docker-compose -f deployments/dbcached.docker-compose.yml up -d
 
 script:
-  - bash <(curl -XPOST http://localhost:8040/analysis -H 'Content-Type: application/json' -d '{"image":"node"}')
-  - docker-compose -f deployments/docker-compose.dbcached.yaml logs vilicus 
+  - curl --location --request POST http://localhost:8040/analysis
+  - docker-compose -f deployments/dbcached.docker-compose.yml logs vilicus
 
 after_script:
-  - docker-compose -f deployments/docker-compose.dbcached.yaml down
+  - docker-compose -f deployments/dbcached.docker-compose.yml down
