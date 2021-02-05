@@ -29,6 +29,3 @@ after_script:
 cache:
   directories:
   - docker_images
-
-before_cache:
-- docker save -o docker_images/images.tar $(docker images -a -q)
