@@ -19,6 +19,7 @@ before_script:
 
 script:
   - curl --location --request POST http://localhost:8040/analysis
+  - docker ps
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
