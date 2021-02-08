@@ -46,7 +46,7 @@ func rt(ref string) (http.RoundTripper, error) {
 	return rt, nil
 }
 
-func Inspect(ctx context.Context, r string) (*claircore.Manifest, error) {
+func inspect(ctx context.Context, r string) (*claircore.Manifest, error) {
 
 	rt, err := rt(r)
 	if err != nil {

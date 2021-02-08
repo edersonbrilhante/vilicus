@@ -10,21 +10,26 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+// ImageAnalysisRequest stores request to add an image to be watched and analyzed by the engine.
 type ImageAnalysisRequest struct {
 	Source ImageSource `json:"source"`
 }
 
+// ImageSource stores set of analysis source types.
 type ImageSource struct {
 	Tag RegistryTagSource `json:"tag"`
 }
+
+// RegistryTagSource stores an image reference using a tag in a registry, this is the most common source type.
 type RegistryTagSource struct {
 	Pullstring string `json:"pullstring"`
 }
 
+// AnchoreImage stores information about an image analysis.
 type AnchoreImage struct {
 	AnalysisStatus string        `json:"analysis_status"`
 	AnalyzedAt     interface{}   `json:"analyzed_at"`
-	Annotations    Annotations   `json:"annotations"`
+	Annotations    interface{}   `json:"annotations"`
 	CreatedAt      time.Time     `json:"created_at"`
 	ImageDigest    string        `json:"imageDigest"`
 	ImageContent   ImageContent  `json:"image_content"`
@@ -35,8 +40,8 @@ type AnchoreImage struct {
 	ParentDigest   string        `json:"parentDigest"`
 	UserID         string        `json:"userId"`
 }
-type Annotations struct {
-}
+
+// Metadata stores content record for a specific image, containing different content type entries.
 type Metadata struct {
 	Arch           interface{} `json:"arch"`
 	Distro         interface{} `json:"distro"`
@@ -45,9 +50,13 @@ type Metadata struct {
 	ImageSize      interface{} `json:"image_size"`
 	LayerCount     interface{} `json:"layer_count"`
 }
+
+// ImageContent stores a metadata struct
 type ImageContent struct {
 	Metadata Metadata `json:"metadata"`
 }
+
+// ImageDetail stores a metadata detail record for a specific image.
 type ImageDetail struct {
 	CreatedAt     time.Time   `json:"created_at"`
 	Digest        string      `json:"digest"`
@@ -64,27 +73,36 @@ type ImageDetail struct {
 	UserID        string      `json:"userId"`
 }
 
+// VulnerabilityResponse envelope containing list of vulnerabilities.
 type VulnerabilityResponse struct {
-	ImageDigest       string            `json:"imageDigest"`
-	Vulnerabilities   []Vulnerabilities `json:"vulnerabilities"`
-	VulnerabilityType string            `json:"vulnerability_type"`
+	ImageDigest       string          `json:"imageDigest"`
+	Vulnerabilities   []Vulnerability `json:"vulnerabilities"`
+	VulnerabilityType string          `json:"vulnerability_type"`
 }
-type CvssV2 struct {
+
+// CVSSV2 stores information about vulnerability with CVSSV2 data.
+type CVSSV2 struct {
 	BaseScore           float64 `json:"base_score"`
 	ExploitabilityScore float64 `json:"exploitability_score"`
 	ImpactScore         float64 `json:"impact_score"`
 }
-type CvssV3 struct {
+
+// CVSSV3 stores information about vulnerability with CVSSV3 data.
+type CVSSV3 struct {
 	BaseScore           float64 `json:"base_score"`
 	ExploitabilityScore float64 `json:"exploitability_score"`
 	ImpactScore         float64 `json:"impact_score"`
 }
+
+// NvdData stores information about Nvd Data item.
 type NvdData struct {
-	CvssV2 CvssV2 `json:"cvss_v2"`
-	CvssV3 CvssV3 `json:"cvss_v3"`
+	CVSSV2 CVSSV2 `json:"cvss_v2"`
+	CVSSV3 CVSSV3 `json:"cvss_v3"`
 	ID     string `json:"id"`
 }
-type Vulnerabilities struct {
+
+// Vulnerability stores a information about vulnerability.
+type Vulnerability struct {
 	Feed           string        `json:"feed"`
 	FeedGroup      string        `json:"feed_group"`
 	Fix            string        `json:"fix"`
@@ -102,12 +120,14 @@ type Vulnerabilities struct {
 	Vuln           string        `json:"vuln"`
 }
 
+// Anchore stores pointers to config and results from scan.
 type Anchore struct {
 	Config    *config.AnchoreEngine
 	resultRaw *VulnerabilityResponse
 	analysis  *types.Analysis
 }
 
+// Analyzer runs an analysis and stores the results in Anchore.resultRaw.
 func (a *Anchore) Analyzer(al *types.Analysis) error {
 	a.analysis = al
 	imgResp, err := a.addImage()
@@ -129,6 +149,7 @@ func (a *Anchore) Analyzer(al *types.Analysis) error {
 	return nil
 }
 
+// Parser parses Anchore.resultRaw and store the final data into a type Analysis.
 func (a *Anchore) Parser() error {
 	if a.resultRaw == nil {
 		return errors.New("Result is empty")

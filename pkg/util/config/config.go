@@ -26,6 +26,7 @@ type Configuration struct {
 	Server  *Server   `yaml:"server,omitempty"`
 	DB      *Database `yaml:"database,omitempty"`
 	Vendors *Vendors  `yaml:"vendors,omitempty"`
+	Client  *Client   `yaml:"client,omitempty"`
 }
 
 // Database holds data necessary for database configuration
@@ -66,4 +67,9 @@ type AnchoreEngine struct {
 type Trivy struct {
 	URL     string `yaml:"url"`
 	Timeout int    `yaml:"timeout_seconds"`
+}
+
+// Client is the struct that stores config need to run client
+type Client struct {
+	URL string `yaml:"url"`
 }

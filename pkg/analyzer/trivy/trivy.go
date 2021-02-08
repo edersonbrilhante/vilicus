@@ -20,14 +20,17 @@ import (
 	ttrivy "github.com/aquasecurity/trivy/pkg/types"
 )
 
+// Trivy stores pointers to config and results from scan
 type Trivy struct {
 	Config    *config.Trivy
 	resultRaw *report.Results
 	analysis  *types.Analysis
 }
 
+// RemoteURL to hold remote host
 type RemoteURL string
 
+// Analyzer runs an analysis and stores the results in Trivy.resultRaw
 func (t *Trivy) Analyzer(al *types.Analysis) error {
 	ctx := context.Background()
 	t.analysis = al
@@ -51,6 +54,7 @@ func (t *Trivy) Analyzer(al *types.Analysis) error {
 	return nil
 }
 
+// Parser parses Trivy.resultRaw and store the final data into a type Analysis
 func (t *Trivy) Parser() error {
 	if t.resultRaw == nil {
 		return xerrors.Errorf("Result is empty")

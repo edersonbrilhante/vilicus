@@ -17,6 +17,7 @@ import (
 	"sync"
 )
 
+// Clair stores pointers to config and results from scan
 type Clair struct {
 	Config    *config.Clair
 	resultRaw *VulnerabilityReport
@@ -28,6 +29,7 @@ var (
 	rtMap = map[string]http.RoundTripper{}
 )
 
+// Analyzer runs an analysis and stores the results in Clair.resultRaw
 func (c *Clair) Analyzer(al *types.Analysis) error {
 	c.analysis = al
 	imgResp, err := c.addImage()
@@ -48,12 +50,57 @@ func (c *Clair) Analyzer(al *types.Analysis) error {
 	return nil
 }
 
+// Parser parses Clair.resultRaw and store the final data into a type Analysis
+func (c *Clair) Parser() error {
+	if c.resultRaw == nil {
+		return errors.New("Result is empty")
+	}
+	fmt.Printf("%v: found %v vulns\n", c.analysis.Image, len(c.resultRaw.Vulnerabilities))
+	r := types.VendorResults{}
+
+	for p, vis := range c.resultRaw.PackageVulnerabilities {
+		for _, vi := range vis {
+
+			pkg := c.resultRaw.Packages[p]
+
+			v := c.resultRaw.Vulnerabilities[vi]
+
+			vuln := types.Vuln{
+				Fix:            v.FixedInVersion,
+				URL:            strings.Split(v.Links, " "),
+				Name:           v.Name,
+				Severity:       v.NormalizedSeverity,
+				PackageName:    pkg.Name,
+				PackageVersion: pkg.Version,
+			}
+			switch vuln.Severity {
+			case "Unknown":
+				r.UnknownVulns = append(r.UnknownVulns, vuln)
+			case "Negligible":
+				r.NegligibleVulns = append(r.NegligibleVulns, vuln)
+			case "Low":
+				r.LowVulns = append(r.LowVulns, vuln)
+			case "Medium":
+				r.MediumVulns = append(r.MediumVulns, vuln)
+			case "High":
+				r.HighVulns = append(r.HighVulns, vuln)
+			case "Critical":
+				r.CriticalVulns = append(r.CriticalVulns, vuln)
+			}
+		}
+	}
+
+	c.analysis.Results.ClairResult = r
+
+	return nil
+}
+
 func (c *Clair) addImage() (IndexReport, error) {
 
 	imgResp := IndexReport{}
 
 	ctx := context.Background()
-	manifest, err := Inspect(ctx, c.analysis.Image)
+	manifest, err := inspect(ctx, c.analysis.Image)
 	if err != nil {
 		return imgResp, err
 	}
@@ -108,48 +155,4 @@ func (c *Clair) getVuln(imgResp IndexReport) (VulnerabilityReport, error) {
 	err = json.Unmarshal(resp.Body(), &vulnResp)
 
 	return vulnResp, err
-}
-
-func (c *Clair) Parser() error {
-	if c.resultRaw == nil {
-		return errors.New("Result is empty")
-	}
-	fmt.Printf("%v: found %v vulns\n", c.analysis.Image, len(c.resultRaw.Vulnerabilities))
-	r := types.VendorResults{}
-
-	for p, vis := range c.resultRaw.PackageVulnerabilities {
-		for _, vi := range vis {
-
-			pkg := c.resultRaw.Packages[p]
-
-			v := c.resultRaw.Vulnerabilities[vi]
-
-			vuln := types.Vuln{
-				Fix:            v.FixedInVersion,
-				URL:            strings.Split(v.Links, " "),
-				Name:           v.Name,
-				Severity:       v.NormalizedSeverity,
-				PackageName:    pkg.Name,
-				PackageVersion: pkg.Version,
-			}
-			switch vuln.Severity {
-			case "Unknown":
-				r.UnknownVulns = append(r.UnknownVulns, vuln)
-			case "Negligible":
-				r.NegligibleVulns = append(r.NegligibleVulns, vuln)
-			case "Low":
-				r.LowVulns = append(r.LowVulns, vuln)
-			case "Medium":
-				r.MediumVulns = append(r.MediumVulns, vuln)
-			case "High":
-				r.HighVulns = append(r.HighVulns, vuln)
-			case "Critical":
-				r.CriticalVulns = append(r.CriticalVulns, vuln)
-			}
-		}
-	}
-
-	c.analysis.Results.ClairResult = r
-
-	return nil
 }
