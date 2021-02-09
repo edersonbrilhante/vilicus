@@ -2,13 +2,14 @@ package types
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
 // Analysis is the struct that stores all data from analysis performed.
 type Analysis struct {
 	ID        string    `json:"id,omitempty" pg:"id,type:uuid,pk,default:uuid_generate_v4()"`
-	Image     string    `json:"image,omitempty" pg:"image"`
+	Image     string    `json:"image,omitempty" pg:"image" validate:"required"`
 	Status    string    `json:"status,omitempty" pg:"status"`
 	CreatedAt time.Time `json:"created_at,omitempty" pg:"created_at,notnull,default:now()"`
 	UpdatedAt time.Time `json:"updated_at,omitempty" pg:"updated_at,notnull,default:now()"`
@@ -22,6 +23,14 @@ type Results struct {
 	ClairResult         VendorResults `json:"clair,omitempty"`
 	AnchoreEngineResult VendorResults `json:"anchore_engine,omitempty"`
 	TrivyResult         VendorResults `json:"trivy,omitempty"`
+}
+
+func (r Results) String() string {
+	clairResult := strings.ReplaceAll(r.ClairResult.String(), "VendorResults", "Clair")
+	anchoreEngineResult := strings.ReplaceAll(r.AnchoreEngineResult.String(), "VendorResults", "AnchoreEngine")
+	trivyResult := strings.ReplaceAll(r.TrivyResult.String(), "VendorResults", "Trivy")
+
+	return fmt.Sprintf("%s %s %s", clairResult, anchoreEngineResult, trivyResult)
 }
 
 // VendorResults stores all Unknown, Negligible Low, Medium, High and Critical vulnerabilities for a vendor

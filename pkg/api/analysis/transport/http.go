@@ -9,11 +9,6 @@ import (
 	"github.com/edersonbrilhante/vilicus/pkg/types"
 )
 
-// Analysis create request
-type createReq struct {
-	Image string `json:"image" validate:"required"`
-}
-
 // NewHTTP creates new analysis http service
 func NewHTTP(svc analysis.Service, r *echo.Group) {
 	h := HTTP{svc}
@@ -29,7 +24,7 @@ type HTTP struct {
 }
 
 func (h HTTP) create(c echo.Context) error {
-	req := new(createReq)
+	req := new(types.Analysis)
 
 	if err := c.Bind(req); err != nil {
 		return err

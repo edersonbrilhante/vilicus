@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -33,8 +34,8 @@ func (ls *LogService) Create(c echo.Context, req types.Analysis) (resp types.Ana
 			c,
 			name, "Create analysis request", err,
 			map[string]interface{}{
-				"req":  req,
-				"resp": resp,
+				"req":  fmt.Sprint(req),
+				"resp": fmt.Sprint(resp),
 				"took": time.Since(begin),
 			},
 		)
@@ -49,8 +50,8 @@ func (ls *LogService) Update(c echo.Context, req types.Analysis) (resp types.Ana
 			c,
 			name, "Update analysis request", err,
 			map[string]interface{}{
-				"req":  req,
-				"resp": resp,
+				"req":  fmt.Sprint(req),
+				"resp": fmt.Sprint(resp),
 				"took": time.Since(begin),
 			},
 		)
