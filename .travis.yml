@@ -20,7 +20,7 @@ before_script:
   - chmod +x /tmp/wait-for-it.sh
 
 script: |-
-  /tmp/wait-for-it.sh http://localhost:8040 -- curl --location --request POST http://localhost:8040/analysis --header 'Content-Type: application/json' --data-raw '{"image": "node"}'    
+  /tmp/wait-for-it.sh http://localhost:8040 -- docker run --network deployments_vilicus_net vilicus/vilicus vilicus-client -p /run/conf.yaml -i python
 
 after_script:
   - docker-compose -f deployments/docker-compose.yml down
