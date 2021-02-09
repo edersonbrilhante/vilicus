@@ -3,7 +3,6 @@ package clair
 import (
 	"context"
 
-	"fmt"
 	"net/http"
 	"net/url"
 	"path"
@@ -74,13 +73,11 @@ func inspect(ctx context.Context, r string) (*claircore.Manifest, error) {
 		return nil, err
 	}
 	out := claircore.Manifest{Hash: ccd}
-	fmt.Printf("%s: found manifest %v \n", r, ccd)
 
 	ls, err := img.Layers()
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("%s: found %d layers \n", r, len(ls))
 
 	repo := ref.Context()
 	rURL := url.URL{

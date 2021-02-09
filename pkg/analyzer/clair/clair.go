@@ -20,7 +20,7 @@ import (
 // Clair stores pointers to config and results from scan
 type Clair struct {
 	Config    *config.Clair
-	resultRaw *VulnerabilityReport
+	resultRaw *vulnerabilityReport
 	analysis  *types.Analysis
 }
 
@@ -95,9 +95,9 @@ func (c *Clair) Parser() error {
 	return nil
 }
 
-func (c *Clair) addImage() (IndexReport, error) {
+func (c *Clair) addImage() (indexReport, error) {
 
-	imgResp := IndexReport{}
+	imgResp := indexReport{}
 
 	ctx := context.Background()
 	manifest, err := inspect(ctx, c.analysis.Image)
@@ -117,7 +117,7 @@ func (c *Clair) addImage() (IndexReport, error) {
 	return imgResp, err
 }
 
-func (c *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
+func (c *Clair) checkAnalysisStatus(imgResp indexReport) (bool, error) {
 	if imgResp.State == "IndexFinished" {
 		return true, nil
 	}
@@ -127,7 +127,7 @@ func (c *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
 
 	client := resty.New()
 
-	newImgResp := IndexReport{}
+	newImgResp := indexReport{}
 	resp, err := client.R().
 		Get(c.Config.URL + "/indexer/api/v1/index_report/" + imgResp.ManifestHash)
 
@@ -142,10 +142,10 @@ func (c *Clair) checkAnalysisStatus(imgResp IndexReport) (bool, error) {
 	return c.checkAnalysisStatus(newImgResp)
 }
 
-func (c *Clair) getVuln(imgResp IndexReport) (VulnerabilityReport, error) {
+func (c *Clair) getVuln(imgResp indexReport) (vulnerabilityReport, error) {
 	client := resty.New()
 
-	vulnResp := VulnerabilityReport{}
+	vulnResp := vulnerabilityReport{}
 	resp, err := client.R().
 		Get(c.Config.URL + "/matcher/api/v1/vulnerability_report/" + imgResp.ManifestHash)
 	if err != nil {

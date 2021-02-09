@@ -4,19 +4,17 @@ import (
 	"time"
 )
 
-// IndexReport is an intermediate data structure describing the contents of a container image
-type IndexReport struct {
+type indexReport struct {
 	ManifestHash  string                   `json:"manifest_hash"`
 	State         string                   `json:"state"`
-	Packages      map[string]Package       `json:"packages"`
-	Distributions map[string]Distribution  `json:"distributions"`
-	Environments  map[string][]Environment `json:"environments"`
+	Packages      map[string]pkg           `json:"packages"`
+	Distributions map[string]distribution  `json:"distributions"`
+	Environments  map[string][]environment `json:"environments"`
 	Success       bool                     `json:"success"`
 	Err           string                   `json:"err"`
 }
 
-// SourcePackage stores a source package affiliated with a Package
-type SourcePackage struct {
+type sourcePackage struct {
 	ID                string `json:"id"`
 	Name              string `json:"name"`
 	Version           string `json:"version"`
@@ -25,20 +23,18 @@ type SourcePackage struct {
 	Cpe               string `json:"cpe"`
 }
 
-// Package storess an item discovered by indexing a Manifest"
-type Package struct {
+type pkg struct {
 	ID                string        `json:"id"`
 	Name              string        `json:"name"`
 	Version           string        `json:"version"`
 	Kind              string        `json:"kind"`
-	SourcePackage     SourcePackage `json:"source"`
+	SourcePackage     sourcePackage `json:"source"`
 	NormalizedVersion string        `json:"normalized_version"`
 	Arch              string        `json:"arch"`
 	Cpe               string        `json:"cpe"`
 }
 
-// Distribution stores an indexed distribution discovered in a layer.
-type Distribution struct {
+type distribution struct {
 	ID              string `json:"id"`
 	Did             string `json:"did"`
 	Name            string `json:"name"`
@@ -50,25 +46,22 @@ type Distribution struct {
 	PrettyName      string `json:"pretty_name"`
 }
 
-// Environment stores a particular package was discovered in.
-type Environment struct {
+type environment struct {
 	PackageDb      string `json:"package_db"`
 	IntroducedIn   string `json:"introduced_in"`
 	DistributionID string `json:"distribution_id"`
 }
 
-// VulnerabilityReport stores discovered packages, package environments, and package vulnerabilities within a Manifest.
-type VulnerabilityReport struct {
+type vulnerabilityReport struct {
 	ManifestHash           string                   `json:"manifest_hash"`
-	Packages               map[string]Package       `json:"packages"`
-	Repository             Repository               `json:"repository"`
-	Environments           map[string][]Environment `json:"environments"`
-	Vulnerabilities        map[string]Vulnerability `json:"vulnerabilities"`
+	Packages               map[string]pkg           `json:"packages"`
+	Repository             repository               `json:"repository"`
+	Environments           map[string][]environment `json:"environments"`
+	Vulnerabilities        map[string]vulnerability `json:"vulnerabilities"`
 	PackageVulnerabilities map[string][]string      `json:"package_vulnerabilities"`
 }
 
-// Repository stores a package repository
-type Repository struct {
+type repository struct {
 	Cpe  string `json:"cpe"`
 	ID   string `json:"id"`
 	Name string `json:"name"`
@@ -76,8 +69,7 @@ type Repository struct {
 	URI  string `json:"uri"`
 }
 
-// Vulnerability an unique item indexed by Clair
-type Vulnerability struct {
+type vulnerability struct {
 	ID                 string       `json:"id"`
 	Updater            string       `json:"updater"`
 	Name               string       `json:"name"`
@@ -86,8 +78,8 @@ type Vulnerability struct {
 	Links              string       `json:"links"`
 	Severity           string       `json:"severity"`
 	NormalizedSeverity string       `json:"normalized_severity"`
-	Package            Package      `json:"package"`
-	Distribution       Distribution `json:"distribution"`
-	Repository         Repository   `json:"repository"`
+	Package            pkg          `json:"package"`
+	Distribution       distribution `json:"distribution"`
+	Repository         repository   `json:"repository"`
 	FixedInVersion     string       `json:"fixed_in_version"`
 }
