@@ -38,6 +38,15 @@ docker-compose -f deployments/docker-compose.yaml up -d
 
 ## Usage
 
+### Using vilicus client
+```
+curl -o /tmp/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+chmod +x /tmp/wait-for-it.sh
+curl -o docker-compose.yml https://raw.githubusercontent.com/edersonbrilhante/vilicus/main/deployments/docker-compose.yml
+docker-compose -f docker-compose.yml up -d
+/tmp/wait-for-it.sh http://localhost:8040 -- docker exec vilicus vilicus-client -p /run/conf.yaml -i <image>
+```
+
 ### Example of analysis
 ```bash
  curl -XPOST 'http://localhost:8040/analysis' \

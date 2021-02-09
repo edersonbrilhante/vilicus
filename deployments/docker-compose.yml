@@ -6,7 +6,7 @@ services:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     image: vilicus/vilicus:latest
-    command: sh -c 'vilicus-migration && vilicus-api -p /run/conf.yaml'
+    command: /run/waitforit -host=vilicus_postgres -port=5432 -debug -- sh -c 'vilicus-migration && vilicus-api -p /run/conf.yaml'
     ports:
       - "8040:8080"
     logging:
@@ -15,7 +15,6 @@ services:
         max-size: 100m
     networks:
       - vilicus_net
-    restart: on-failure
     depends_on:
       - postgres
       - anchore_engine
