@@ -8,8 +8,10 @@ GOLINT ?= $(GOBIN)/golint
 GOSEC ?= $(GOBIN)/gosec
 
 VILICUS_API_BIN ?= vilicus-api-bin
+VILICUS_CLIENT_BIN ?= vilicus-client-bin
 VILICUS_MIGRATION_BIN ?= vilicus-migration-bin
 CMD_API ?= ./cmd/api/main.go
+CMD_CLIENT ?= ./cmd/client/main.go
 CMD_MIGRATION ?= ./cmd/migration/main.go
 
 COLOR_RESET=\033[0;39;49m
@@ -35,10 +37,10 @@ COMMIT := $(shell git rev-parse $(TAG))
 LDFLAGS := '-X "main.version=$(TAG)" -X "main.commit=$(COMMIT)" -X "main.date=$(DATE)" -w -s'
 
 ## Builds all project binaries
-build: build-api build-migration
+build: build-api build-client build-migration
 
 ## Builds all project binaries using linux architecture
-build-linux: build-api-linux build-migration-linux
+build-linux: build-api-linux build-client-linux build-migration-linux
 
 ## Builds API code into a binary
 build-api:
@@ -47,6 +49,14 @@ build-api:
 ## Builds API code using linux architecture into a binary
 build-api-linux:
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
+
+## Builds API code into a binary
+build-client:
+	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
+
+## Builds API code using linux architecture into a binary
+build-client-linux:
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
 
 ## Builds all image locally with the latest tags
 build-images:
