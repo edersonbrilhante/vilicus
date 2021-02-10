@@ -19,6 +19,7 @@ func Start(cfg *config.Configuration, imgList []string) error {
 	cli := client{config: cfg.Client}
 
 	for _, img := range imgList {
+		fmt.Printf("Starting analysis with image %s \n", img)
 		analysis, err := cli.createAnalysis(img)
 		if err != nil {
 			return err
@@ -28,6 +29,8 @@ func Start(cfg *config.Configuration, imgList []string) error {
 			return err
 		}
 		fmt.Print(analysis.Results)
+		fmt.Printf("Finised analysis with image %s \n", img)
+		fmt.Printf("Results: %s \n", analysis.Results)
 
 	}
 	return nil
@@ -37,7 +40,6 @@ func (c client) createAnalysis(img string) (types.Analysis, error) {
 	client := resty.New()
 	analysis := types.Analysis{}
 
-	fmt.Println(img)
 	resp, err := client.R().
 		SetBody(types.Analysis{Image: img}).
 		Post(c.config.URL + "/analysis")
