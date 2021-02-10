@@ -2,5 +2,6 @@
 .DS_Store
 
 vilicus-api-bin
+vilicus-client-bin
 vilicus-migration-bin
 vilicus-client-bin
