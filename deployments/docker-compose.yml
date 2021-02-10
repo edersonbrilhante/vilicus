@@ -6,7 +6,7 @@ services:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     image: vilicus/vilicus:latest
-    command: /run/waitforit -host=vilicus_postgres -port=5432 -debug -- sh -c 'vilicus-migration && vilicus-api -p /run/conf.yaml'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 2s -timeout 1200s vilicus-migration && vilicus-api -p /run/conf.yaml'
     ports:
       - "8040:8080"
     logging:
@@ -20,6 +20,17 @@ services:
       - anchore_engine
       - trivy
       - clair
+  
+  vilicus_client:
+    container_name: vilicus_client
+    environment:
+      GOPATH: /go/
+    image: vilicus/vilicus:latest
+    command: sh -c 'tail -f /dev/null'
+    networks:
+      - vilicus_net
+    depends_on:
+      - vilicus
 
   postgres:
     container_name: vilicus_postgres
@@ -33,7 +44,7 @@ services:
 
   anchore_engine:
     container_name: anchore_engine
-    command: anchore-manager service start --all
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s anchore-manager service start --all'
     environment:
       ANCHORE_HOST_ID: dockerhostid-anchore-engine
       ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
@@ -55,7 +66,6 @@ services:
         max-size: 100m
     networks:
       - vilicus_net
-    restart: on-failure
     depends_on:
       - postgres
 
@@ -70,15 +80,16 @@ services:
 
   clair:
     container_name: clair
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s /bin/clair'
     environment:
       CLAIR_CONF: /tmp/config.yaml
       CLAIR_MODE: combo
     image: vilicus/clair:latest
     ports:
       - "8043:6060"
+      - "8044:6061"
     networks:
       - vilicus_net
-    restart: on-failure
     depends_on:
       - postgres
 
@@ -86,10 +97,9 @@ services:
     container_name: db_adminer
     image: adminer
     ports:
-      - "8044:8080"
+      - "8045:8080"
     networks:
       - vilicus_net
-    restart: on-failure
     depends_on:
       - postgres
 

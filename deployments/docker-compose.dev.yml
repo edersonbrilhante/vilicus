@@ -25,6 +25,20 @@ services:
       - trivy
       - clair
 
+  postgres:
+    container_name: vilicus_postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
+    build:
+      context: ../
+      dockerfile: deployments/dockerfiles/postgres/Dockerfile
+    ports:
+      - "5432"
+    networks:
+      - vilicus_net
+
 networks:
     vilicus_net:
     
