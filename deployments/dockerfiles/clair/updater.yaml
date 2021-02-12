@@ -11,16 +11,7 @@ matcher:
   max_conn_pool: 100
   run: ""
   migrations: true
-  updater_sets:
-  - "alpine"
-  - "aws"
-  - "debian"
-  - "oracle"
-  - "photon"
-  - "pyupio"
-  - "rhel"
-  - "suse"
-  - "ubuntu"
+  disable_updaters: false
 notifier:
   connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
   migrations: true
