@@ -34,7 +34,7 @@ services:
 
   postgres:
     container_name: vilicus_postgres
-    image: vilicus/database-presets:latest
+    image: vilicus/postgres-presets:latest
     environment:
       PGDATA: postgres
     ports:
