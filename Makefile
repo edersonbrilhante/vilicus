@@ -82,7 +82,7 @@ check-sec:
 
 ## Composes Vilicus environment using docker-compose
 compose:
-	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+	COMPOSE_IGNORE_ORPHANS=True docker-compose -f deployments/docker-compose.yml up -d --force-recreate
 
 ## Prints help message
 help:

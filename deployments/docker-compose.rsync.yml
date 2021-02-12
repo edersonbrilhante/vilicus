@@ -1,6 +1,7 @@
 version: '3'
 services:
   old:
+    container_name: postgres_volume_old
     image: vilicus/postgres-volume:old
     volumes:
       - "../deployments/dockerfiles/utils/rsync:/.docker-image-diff/"
@@ -13,6 +14,7 @@ services:
       - vilicus_rsync_net
   
   new:
+    container_name: postgres_volume_new
     image: vilicus/postgres-volume:new
     links:
     - old
@@ -23,9 +25,9 @@ services:
       RESTRICT_DIFF_TO_PATH: /postgres
       OUT: /.docker-image-diff-output
     working_dir: /.docker-image-diff/
-    command: /.docker-image-diff/rsync-new.sh
+    command: sh -c 'tail -f /dev/null'
     networks:
       - vilicus_rsync_net
 
 networks:
-    vilicus_rsync_net:
+  vilicus_rsync_net:
