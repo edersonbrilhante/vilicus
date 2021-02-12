@@ -120,18 +120,18 @@ update-images: build-images push-images
 
 ## Builds postgres images with rsync, and data from postgres used for further processing
 rsync-build-postgres:
-	chmod +x scripts/rsync-postgres-build-images.sh
-	./scripts/rsync-postgres-build-images.sh
+	chmod +x scripts/rsync-build-postgres.sh
+	./scripts/rsync-build-postgres.sh
 
 ## Processes and builds postgres images with changes
 rsync-process-postgres:
-	chmod +x scripts/rsync-postgres-process-images.sh
-	./scripts/rsync-postgres-process-images.sh
+	chmod +x scripts/rsync-process-postgres.sh
+	./scripts/rsync-process-postgres.sh
 
 ## Builds and pushes postgres images with the latest tags
 rsync-push-postgres:
-	chmod +x scripts/rsync-postgres-push-images.sh
-	./scripts/rsync-postgres-push-images.sh
+	chmod +x scripts/rsync-push-postgres.sh
+	./scripts/rsync-push-postgres.sh
 
 ## Builds, processes and pushes postgres images with the latest tags
 rsync-update-postgres: rsync-build-postgres rsync-process-postgres rsync-push-postgres
