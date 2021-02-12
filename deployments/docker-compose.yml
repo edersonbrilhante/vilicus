@@ -34,7 +34,7 @@ services:
 
   postgres:
     container_name: vilicus_postgres
-    image: vilicus/database-presets:dev
+    image: vilicus/database-presets:latest
     environment:
       PGDATA: postgres
     ports:
@@ -80,7 +80,7 @@ services:
 
   clair:
     container_name: clair
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s /bin/clair'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s /bin/clair -conf /tmp/scanner.yaml'
     environment:
       CLAIR_CONF: /tmp/config.yaml
       CLAIR_MODE: combo

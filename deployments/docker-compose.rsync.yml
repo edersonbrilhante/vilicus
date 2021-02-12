@@ -1,0 +1,31 @@
+version: '3'
+services:
+  old:
+    image: vilicus/postgres-volume:old
+    volumes:
+      - "../deployments/dockerfiles/utils/rsync:/.docker-image-diff/"
+    command: /.docker-image-diff/rsync-old.sh
+    environment:
+      VOLUME: /postgres
+    ports:
+      - "873"
+    networks:
+      - vilicus_rsync_net
+  
+  new:
+    image: vilicus/postgres-volume:new
+    links:
+    - old
+    volumes:
+      - "../deployments/dockerfiles/utils/rsync:/.docker-image-diff/"
+      - ../local-volumes/output:/.docker-image-diff-output/
+    environment:  
+      RESTRICT_DIFF_TO_PATH: /postgres
+      OUT: /.docker-image-diff-output
+    working_dir: /.docker-image-diff/
+    command: /.docker-image-diff/rsync-new.sh
+    networks:
+      - vilicus_rsync_net
+
+networks:
+    vilicus_rsync_net:
