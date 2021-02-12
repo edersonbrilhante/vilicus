@@ -87,12 +87,19 @@ compose:
 ## Prints help message
 help:
 	printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
+	printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
+	printf "\n"
+	printf "${COLOR_BLUE}    make <target>${COLOR_RESET}"
+	printf "\n"
+	printf "\n"
+	printf "${COLOR_BOLD}  Targets:${COLOR_RESET}"
+	printf "\n"
 	awk '/^[a-zA-Z\-\_0-9\.%]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")); \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "${COLOR_BLUE}$$ make %-22s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+			printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort
@@ -103,10 +110,28 @@ lint:
 	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
 	$(GOLINT) ./...
 
-## Push images to hub.docker
+## Pushes images to hub.docker
 push-images:
 	chmod +x scripts/push-images.sh
 	./scripts/push-images.sh
 
-## Builds and push images with the latest tags
+## Builds and pushes images with the latest tags
 update-images: build-images push-images
+
+## Builds postgres images with rsync, and data from postgres used for further processing
+rsync-build-postgres:
+	chmod +x scripts/rsync-postgres-build-images.sh
+	./scripts/rsync-postgres-build-images.sh
+
+## Processes and builds postgres images with changes
+rsync-process-postgres:
+	chmod +x scripts/rsync-postgres-process-images.sh
+	./scripts/rsync-postgres-process-images.sh
+
+## Builds and pushes postgres images with the latest tags
+rsync-push-postgres:
+	chmod +x scripts/rsync-postgres-push-images.sh
+	./scripts/rsync-postgres-push-images.sh
+
+## Builds, processes and pushes postgres images with the latest tags
+rsync-update-postgres: rsync-build-postgres rsync-process-postgres rsync-push-postgres
