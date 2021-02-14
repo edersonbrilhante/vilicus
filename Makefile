@@ -63,6 +63,11 @@ build-images:
 	chmod +x scripts/build-images.sh
 	./scripts/build-images.sh
 
+## Builds preset postgres
+build-preset-postgres:
+	chmod +x scripts/build-postgres.sh
+	./scripts/build-postgres.sh
+
 ## Builds API migration code into a binary
 build-migration:
 	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
