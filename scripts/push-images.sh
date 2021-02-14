@@ -16,3 +16,4 @@ docker push "vilicus/anchore:latest" && docker push "vilicus/anchore:$anchoreVer
 docker push "vilicus/clair:latest" && docker push "vilicus/clair:$clairVersion"
 docker push "vilicus/trivy:latest" && docker push "vilicus/trivy:$trivyVersion"
 docker push "vilicus/vilicus:latest" && docker push "vilicus/vilicus:$vilicusVersion"
+docker push "vilicus/postgres:base"

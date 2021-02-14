@@ -6,3 +6,4 @@ docker build -f deployments/dockerfiles/anchore/Dockerfile -t vilicus/anchore:la
 docker build -f deployments/dockerfiles/clair/Dockerfile -t vilicus/clair:latest .
 docker build -f deployments/dockerfiles/trivy/Dockerfile -t vilicus/trivy:latest .
 docker build -f deployments/dockerfiles/vilicus/Dockerfile -t vilicus/vilicus:latest .
+docker build -f deployments/dockerfiles/postgres/Dockerfile -t vilicus/postgres:base .
