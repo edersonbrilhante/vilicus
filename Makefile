@@ -64,7 +64,7 @@ build-images:
 	./scripts/build-images.sh
 
 ## Builds preset postgres
-build-preset-postgres: compose
+build-preset-postgres:
 	chmod +x scripts/build-preset-postgres.sh
 	./scripts/build-preset-postgres.sh
 
@@ -85,9 +85,13 @@ check-sec:
 	GO111MODULE=off $(GO) get -u github.com/securego/gosec/cmd/gosec
 	$(GOSEC) ./...
 
-## Composes Vilicus environment using docker-compose
-compose:
+## Composes Vilicus environment for scanner
+compose-scanner:
 	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+
+## Composes Vilicus environment for updater
+compose-updater:
+	docker-compose -f deployments/docker-compose.yml -f deployments/docker-compose.updater.yml up -d --force-recreate
 
 ## Prints help message
 help:
