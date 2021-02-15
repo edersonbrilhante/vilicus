@@ -7,19 +7,20 @@ services:
 
 stages:
   - build-images
-  - push-images
+  - name: build-preset-postgres
+    if: type = cron
 
 jobs:
   include:
     - stage: build-images
-      before_script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       script:         
         - make build-images
-        - make build-preset-postgres
-    - stage: push-images
-      before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      script:       
         - make push-images
+    - stage: build-preset-postgres
+      script:         
+        - make build-images
+        - make compose-updater
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make build-preset-postgres
         - make push-preset-postgres
