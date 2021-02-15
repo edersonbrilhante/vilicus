@@ -64,7 +64,7 @@ build-images:
 	./scripts/build-images.sh
 
 ## Builds preset postgres
-build-preset-postgres:
+build-preset-postgres: compose
 	chmod +x scripts/build-postgres.sh
 	./scripts/build-postgres.sh
 
@@ -92,12 +92,19 @@ compose:
 ## Prints help message
 help:
 	printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
+	printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
+	printf "\n"
+	printf "${COLOR_BLUE}    make <target>${COLOR_RESET}"
+	printf "\n"
+	printf "\n"
+	printf "${COLOR_BOLD}  Targets:${COLOR_RESET}"
+	printf "\n"
 	awk '/^[a-zA-Z\-\_0-9\.%]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")); \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "${COLOR_BLUE}$$ make %-22s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+			printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort
