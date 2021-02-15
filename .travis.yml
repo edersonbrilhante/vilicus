@@ -7,13 +7,19 @@ services:
 
 stages:
   - build-images
+  - push-images
 
 jobs:
   include:
     - stage: build-images
-      script: 
+      before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      script:         
         - make build-images
-        - make push-images
         - make build-preset-postgres
+    - stage: push-images
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      script:       
+        - make push-images
         - make push-preset-postgres

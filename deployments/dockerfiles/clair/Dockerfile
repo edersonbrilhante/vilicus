@@ -1,4 +1,4 @@
-FROM jwilder/dockerize::0.6.1 as dockerize
+FROM jwilder/dockerize:0.6.1 as dockerize
 
 FROM quay.io/projectquay/clair:4.0.0
 LABEL vilicus.app.version=4.0.0
