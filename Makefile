@@ -65,8 +65,8 @@ build-images:
 
 ## Builds preset postgres
 build-preset-postgres: compose
-	chmod +x scripts/build-postgres.sh
-	./scripts/build-postgres.sh
+	chmod +x scripts/build-preset-postgres.sh
+	./scripts/build-preset-postgres.sh
 
 ## Builds API migration code into a binary
 build-migration:
