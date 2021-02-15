@@ -7,9 +7,13 @@ services:
 
 stages:
   - name: build-images
-    if: branch = main
+    if: |
+      branch = main \
+      type != cron
   - name: build-preset-postgres
-    if: type = cron
+    if: 
+      branch = main \
+      type = cron
 
 jobs:
   include:
