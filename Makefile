@@ -91,6 +91,9 @@ compose:
 
 ## Prints help message
 help:
+
+	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
 	printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
 	printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
 	printf "\n"
@@ -119,6 +122,11 @@ lint:
 push-images:
 	chmod +x scripts/push-images.sh
 	./scripts/push-images.sh
+
+## Push images to hub.docker
+push-preset-postgres:
+	chmod +x scripts/push-preset-postgres.sh
+	./scripts/push-preset-postgres.sh
 
 ## Builds and push images with the latest tags
 update-images: build-images push-images
