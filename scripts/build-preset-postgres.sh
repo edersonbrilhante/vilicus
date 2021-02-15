@@ -2,6 +2,9 @@
 
 # This script will build preset postgres image
 
+set -e
+set -u
+
 COLOR_RESET="\033[0;39;49m"
 COLOR_RED="\033[38;5;161m"
 COLOR_YELO="\033[38;5;227m"

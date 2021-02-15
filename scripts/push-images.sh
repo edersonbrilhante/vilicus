@@ -2,6 +2,9 @@
 
 # This script will push all images
 
+set -e
+set -u
+
 anchoreVersion=$(docker image inspect vilicus/anchore:latest --format '{{ index .Config.Labels "vilicus.app.version"}}')
 clairVersion=$(docker image inspect vilicus/clair:latest --format '{{ index .Config.Labels "vilicus.app.version"}}')
 trivyVersion=$(docker image inspect vilicus/trivy:latest --format '{{ index .Config.Labels "vilicus.app.version"}}')
