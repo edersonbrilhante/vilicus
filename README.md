@@ -1,5 +1,10 @@
 # Vilicus
 
+<p align="left">
+  <a href="https://github.com/edersonbrilhante/vilicus/releases"><img src="https://img.shields.io/github/v/release/edersonbrilhante/vilicus"/></a>
+  <a href="https://travis-ci.com/edersonbrilhante/vilicus.svg?branch=main"><img src="https://travis-ci.com/edersonbrilhante/vilicus.svg?branch=main"/></a>
+</p>
+
 # Table of Contents
 - [Overview](#overview)
   - [How does it work?](#how-does-it-work)
