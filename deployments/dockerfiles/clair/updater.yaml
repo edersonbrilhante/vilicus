@@ -1,0 +1,19 @@
+introspection_addr: 0.0.0.0:6061
+http_listen_addr: 0.0.0.0:6060
+log_level: error
+indexer:
+  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
+  scanlock_retry: 10
+  layer_scan_concurrency: 5
+  migrations: true
+matcher:
+  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
+  max_conn_pool: 100
+  run: ""
+  migrations: true
+  disable_updaters: false
+notifier:
+  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
+  migrations: true
+  delivery_interval: 5m
+  poll_interval: 15m

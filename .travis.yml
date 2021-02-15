@@ -1,0 +1,32 @@
+language: bash
+
+sudo: required
+
+services:
+  - docker
+
+stages:
+  - name: build-images
+    if: |
+      branch = main \
+      type != cron
+  - name: build-preset-postgres
+    if: 
+      branch = main \
+      type = cron
+
+jobs:
+  include:
+    - stage: build-images
+      script:         
+        - make build-images
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make push-images
+    - stage: build-preset-postgres
+      script:         
+        - make build-images
+        - make compose-updater
+        - travis_wait 300 sleep infinity
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make build-preset-postgres
+        - make push-preset-postgres

@@ -6,7 +6,7 @@ services:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     image: vilicus/vilicus:latest
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 2s -timeout 1200s vilicus-migration && vilicus-api -p /run/conf.yaml'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 20s -timeout 1000s vilicus-migration && vilicus-api -p /run/conf.yaml'
     ports:
       - "8040:8080"
     logging:
@@ -34,17 +34,21 @@ services:
 
   postgres:
     container_name: vilicus_postgres
-    image: vilicus/database-presets:dev
+    image: vilicus/postgres:preset
     environment:
-      PGDATA: postgres
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
     ports:
       - "5432"
+    volumes:
+        - "postgres_vol:/var/lib/postgresql/data/"
     networks:
       - vilicus_net
 
   anchore_engine:
     container_name: anchore_engine
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s anchore-manager service start --all'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 20s -timeout 1000s anchore-manager service start --all'
     environment:
       ANCHORE_HOST_ID: dockerhostid-anchore-engine
       ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
@@ -80,9 +84,9 @@ services:
 
   clair:
     container_name: clair
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 2s -timeout 600s /bin/clair'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 20s -timeout 1000s /bin/clair'
     environment:
-      CLAIR_CONF: /tmp/config.yaml
+      CLAIR_CONF: /opt/vilicus/data/scanner.yaml
       CLAIR_MODE: combo
     image: vilicus/clair:latest
     ports:
@@ -104,5 +108,7 @@ services:
       - postgres
 
 networks:
-    vilicus_net:
+  vilicus_net:
     
+volumes:
+  postgres_vol:

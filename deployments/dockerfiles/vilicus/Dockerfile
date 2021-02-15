@@ -10,7 +10,7 @@ RUN apk add \
 RUN make check-deps
 RUN make build-linux
 
-FROM jwilder/dockerize as dockerize
+FROM korbin/dockerize:latest as dockerize
 
 FROM golang:1.15-alpine AS final
 LABEL vilicus.app.version=dev

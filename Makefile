@@ -63,6 +63,11 @@ build-images:
 	chmod +x scripts/build-images.sh
 	./scripts/build-images.sh
 
+## Builds preset postgres
+build-preset-postgres:
+	chmod +x scripts/build-preset-postgres.sh
+	./scripts/build-preset-postgres.sh
+
 ## Builds API migration code into a binary
 build-migration:
 	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
@@ -80,19 +85,33 @@ check-sec:
 	GO111MODULE=off $(GO) get -u github.com/securego/gosec/cmd/gosec
 	$(GOSEC) ./...
 
-## Composes Vilicus environment using docker-compose
-compose:
+## Composes Vilicus environment for scanner
+compose-scanner:
 	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+
+## Composes Vilicus environment for updater
+compose-updater:
+	docker-compose -f deployments/docker-compose.yml -f deployments/docker-compose.updater.yml up -d --force-recreate
 
 ## Prints help message
 help:
+
+	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
 	printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
+	printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
+	printf "\n"
+	printf "${COLOR_BLUE}    make <target>${COLOR_RESET}"
+	printf "\n"
+	printf "\n"
+	printf "${COLOR_BOLD}  Targets:${COLOR_RESET}"
+	printf "\n"
 	awk '/^[a-zA-Z\-\_0-9\.%]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")); \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "${COLOR_BLUE}$$ make %-22s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+			printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort
@@ -107,6 +126,11 @@ lint:
 push-images:
 	chmod +x scripts/push-images.sh
 	./scripts/push-images.sh
+
+## Push images to hub.docker
+push-preset-postgres:
+	chmod +x scripts/push-preset-postgres.sh
+	./scripts/push-preset-postgres.sh
 
 ## Builds and push images with the latest tags
 update-images: build-images push-images
