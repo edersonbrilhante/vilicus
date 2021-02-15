@@ -9,7 +9,7 @@ stages:
   - name: build-images
     if: |
       branch = main AND \
-      type = cron
+      type != cron
   - name: build-preset-postgres
     if: |
       branch = main AND \
