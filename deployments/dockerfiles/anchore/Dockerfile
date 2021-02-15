@@ -1,4 +1,4 @@
-FROM korbin/dockerize:latest as dockerize
+FROM jwilder/dockerize::0.6.1 as dockerize
 
 FROM anchore/anchore-engine:v0.9.0
 LABEL vilicus.app.version=v0.9.0
