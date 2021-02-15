@@ -6,7 +6,8 @@ services:
   - docker
 
 stages:
-  - build-images
+  - name: build-images
+    if: branch = main
   - name: build-preset-postgres
     if: type = cron
 
@@ -21,6 +22,7 @@ jobs:
       script:         
         - make build-images
         - make compose-updater
+        - travis_wait 300 sleep infinity
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - make build-preset-postgres
         - make push-preset-postgres
