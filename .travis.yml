@@ -1,0 +1,19 @@
+language: bash
+
+sudo: required
+
+services:
+  - docker
+
+stages:
+  - build-images
+
+jobs:
+  include:
+    - stage: build-images
+      script: 
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make build-images
+        - make push-images
+        - make build-preset-postgres
+        - make push-preset-postgres
