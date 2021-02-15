@@ -1,6 +1,6 @@
-language: bash
-
-sudo: required
+os: linux
+dist: xenial
+language: shell
 
 services:
   - docker
@@ -8,11 +8,11 @@ services:
 stages:
   - name: build-images
     if: |
-      branch = main \
+      branch = main AND \
       type = cron
   - name: build-preset-postgres
-    if: 
-      branch = main \
+    if: |
+      branch = main AND \
       type = cron
 
 jobs:
