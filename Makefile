@@ -87,11 +87,11 @@ check-sec:
 
 ## Composes Vilicus environment for scanner
 compose-scanner:
-	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+	docker-compose -f deployments/docker-compose.scanner.yml up -d --force-recreate
 
 ## Composes Vilicus environment for updater
 compose-updater:
-	docker-compose -f deployments/docker-compose.yml -f deployments/docker-compose.updater.yml up -d --force-recreate
+	docker-compose -f deployments/docker-compose.scanner.yml -f deployments/docker-compose.updater.yml up -d --force-recreate
 
 ## Prints help message
 help:

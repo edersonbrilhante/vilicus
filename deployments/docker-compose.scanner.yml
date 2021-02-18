@@ -40,6 +40,7 @@ services:
     command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 60s -timeout 10000s anchore-manager service start --all'
     environment:
       ANCHORE_HOST_ID: dockerhostid-anchore-engine
+      ANCHORE_FEEDS_ENABLED: "False"
       ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
       ANCHORE_DB_NAME: anchore_db
       ANCHORE_DB_HOST: vilicus_postgres
