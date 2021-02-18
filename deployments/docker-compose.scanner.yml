@@ -1,0 +1,93 @@
+version: '3'
+services:
+  vilicus:
+    container_name: vilicus
+    environment:
+      GOPATH: /go/
+      DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
+    image: vilicus/vilicus:latest
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 60s -timeout 10000s vilicus-migration && vilicus-api -p /run/conf.yaml'
+    ports:
+      - "8040:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+    networks:
+      - vilicus_net
+    depends_on:
+      - postgres
+      - anchore_engine
+      - trivy
+      - clair
+  
+  postgres:
+    container_name: vilicus_postgres
+    image: vilicus/postgres:preset
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
+    ports:
+      - "5432"
+    volumes:
+        - "postgres_vol:/var/lib/postgresql/data/"
+    networks:
+      - vilicus_net
+
+  anchore_engine:
+    container_name: anchore_engine
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 60s -timeout 10000s anchore-manager service start --all'
+    environment:
+      ANCHORE_HOST_ID: dockerhostid-anchore-engine
+      ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
+      ANCHORE_DB_NAME: anchore_db
+      ANCHORE_DB_HOST: vilicus_postgres
+      ANCHORE_DB_USER: username
+      ANCHORE_DB_PASSWORD: password
+      ANCHORE_DB_PORT: 5432
+      ANCHORE_ENDPOINT_HOSTNAME: localhost
+      ANCHORE_ENDPOINT_PORT: 8228
+      ANCHORE_MAX_COMPRESSED_IMAGE_SIZE_MB: -1
+      ANCHORE_HINTS_ENABLED: "False"
+    image: vilicus/anchore:latest
+    ports:
+      - "8041:8228"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+    networks:
+      - vilicus_net
+    depends_on:
+      - postgres
+
+  trivy:
+    container_name: trivy
+    command: "server --listen 0.0.0.0:8080"
+    image: vilicus/trivy:latest
+    ports:
+      - "8042:8080"
+    networks:
+      - vilicus_net
+
+  clair:
+    container_name: clair
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 60s -timeout 10000s /bin/clair'
+    environment:
+      CLAIR_CONF: /opt/vilicus/data/scanner.yaml
+      CLAIR_MODE: combo
+    image: vilicus/clair:latest
+    ports:
+      - "8043:6060"
+      - "8044:6061"
+    networks:
+      - vilicus_net
+    depends_on:
+      - postgres
+
+networks:
+  vilicus_net:
+    
+volumes:
+  postgres_vol:
