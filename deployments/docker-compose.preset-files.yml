@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgres:
+    image: vilicus/postgres:preset-files
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
+    volumes:
+        - "postgres_vol:/var/lib/postgresql/data/"
+
+volumes:
+  postgres_vol:

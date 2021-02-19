@@ -10,7 +10,7 @@ COLOR_YELO="\033[38;5;227m"
 
 run_postgres () {
     printf $COLOR_YELO"Running postgres\n"$COLOR_RESET
-    docker exec -d vilicus_postgres sh -c 'docker-entrypoint.sh postgres'
+    docker exec vilicus_postgres sh -c 'docker-entrypoint.sh postgres' &
 
     printf $COLOR_YELO"Test connection with vilicus: Starting\n"$COLOR_RESET
     docker run --network container:vilicus_postgres vilicus/vilicus:latest sh -c "dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 10s -timeout 10000s echo done"
@@ -44,7 +44,7 @@ preset_files () {
     printf $COLOR_YELO"Dump databases: Done\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build postgres with dump files: Starting\n"$COLOR_RESET
-    docker build -f deployments/dockerfiles/postgres/preset/Dockerfile -t vilicus/postgres:preset .
+    docker build -f deployments/dockerfiles/postgres/preset/Dockerfile -t vilicus/postgres:preset-files .
     printf $COLOR_YELO"Build postgres with dump files: Done\n"$COLOR_RESET
 }
 

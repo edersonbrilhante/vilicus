@@ -4,3 +4,6 @@ services:
     environment:
       CLAIR_CONF: /opt/vilicus/data/updater.yaml
       CLAIR_MODE: combo
+
+  postgres:
+    entrypoint: "tail -f /dev/null"

@@ -1,0 +1,11 @@
+version: '3'
+services:
+  adminer:
+    container_name: db_adminer
+    image: adminer
+    ports:
+      - "8045:8080"
+    networks:
+      - vilicus_net
+    depends_on:
+      - postgres

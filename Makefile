@@ -14,6 +14,27 @@ CMD_API ?= ./cmd/api/main.go
 CMD_CLIENT ?= ./cmd/client/main.go
 CMD_MIGRATION ?= ./cmd/migration/main.go
 
+DOCKER_COMPOSE_FILE := ./deployments/docker-compose.yml
+DOCKER_COMPOSE_DEV_FILE := deployments/docker-compose.dev.yml
+DOCKER_COMPOSE_ADMINER_FILE := deployments/docker-compose.adminer.yml
+DOCKER_COMPOSE_UPDATER_FILE := deployments/docker-compose.updater.yml
+DOCKER_COMPOSE_PRESETFILES_FILE := deployments/docker-compose.preset-files.yml
+
+DOCKER_COMPOSE_CMD=docker-compose -f ./deployments/docker-compose.yml
+ifdef DEV
+	DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_DEV_FILE)
+endif
+ifdef ADMINER
+	DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_ADMINER_FILE)
+endif
+ifdef UPDATER
+	DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_UPDATER_FILE)
+endif
+ifdef PRESETFILES
+	DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_PRESETFILES_FILE)
+endif
+DOCKER_COMPOSE_CMD+=up -d
+
 COLOR_RESET=\033[0;39;49m
 COLOR_BOLD=\033[1m
 COLOR_ULINE=\033[4m
@@ -85,15 +106,13 @@ check-sec:
 	GO111MODULE=off $(GO) get -u github.com/securego/gosec/cmd/gosec
 	$(GOSEC) ./...
 
-## Composes Vilicus environment for scanner
-compose-scanner:
-	docker-compose -f deployments/docker-compose.scanner.yml up -d --force-recreate
 
 ## Composes Vilicus environment for updater
-compose-updater:
-	docker-compose -f deployments/docker-compose.scanner.yml -f deployments/docker-compose.updater.yml up -d --force-recreate
+compose:	
+	$(shell $(DOCKER_COMPOSE_CMD))
+	
 
-## Prints help message
+## Prints help messag"
 help:
 
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)

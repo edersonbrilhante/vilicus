@@ -5,5 +5,5 @@
 set -e
 set -u
 
-docker push vilicus/postgres:preset
+docker push vilicus/postgres:preset-files
 docker push vilicus/postgres:preset-volume

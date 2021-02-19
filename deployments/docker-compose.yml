@@ -6,7 +6,7 @@ services:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     image: vilicus/vilicus:latest
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 20s -timeout 1000s vilicus-migration && vilicus-api -p /run/conf.yaml'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 60s -timeout 10000s vilicus-migration && vilicus-api -p /run/conf.yaml'
     ports:
       - "8040:8080"
     logging:
@@ -21,36 +21,12 @@ services:
       - trivy
       - clair
   
-  vilicus_client:
-    container_name: vilicus_client
-    environment:
-      GOPATH: /go/
-    image: vilicus/vilicus:latest
-    command: sh -c 'tail -f /dev/null'
-    networks:
-      - vilicus_net
-    depends_on:
-      - vilicus
-
-  postgres:
-    container_name: vilicus_postgres
-    image: vilicus/postgres:preset
-    environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
-    ports:
-      - "5432"
-    volumes:
-        - "postgres_vol:/var/lib/postgresql/data/"
-    networks:
-      - vilicus_net
-
   anchore_engine:
     container_name: anchore_engine
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 20s -timeout 1000s anchore-manager service start --all'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 60s -timeout 10000s anchore-manager service start --all'
     environment:
       ANCHORE_HOST_ID: dockerhostid-anchore-engine
+      ANCHORE_FEEDS_ENABLED: "False"
       ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
       ANCHORE_DB_NAME: anchore_db
       ANCHORE_DB_HOST: vilicus_postgres
@@ -84,7 +60,7 @@ services:
 
   clair:
     container_name: clair
-    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 20s -timeout 1000s /bin/clair'
+    command: sh -c 'dockerize -wait tcp://vilicus_postgres:5432 -wait-retry-interval 60s -timeout 10000s /bin/clair'
     environment:
       CLAIR_CONF: /opt/vilicus/data/scanner.yaml
       CLAIR_MODE: combo
@@ -97,18 +73,15 @@ services:
     depends_on:
       - postgres
 
-  adminer:
-    container_name: db_adminer
-    image: adminer
+  postgres:
+    container_name: vilicus_postgres
+    image: vilicus/postgres:preset-volume  
+    environment:
+      PGDATA: /data
     ports:
-      - "8045:8080"
+      - "5432"
     networks:
       - vilicus_net
-    depends_on:
-      - postgres
 
 networks:
   vilicus_net:
-    
-volumes:
-  postgres_vol:

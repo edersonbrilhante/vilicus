@@ -1,44 +1,9 @@
 version: '3'
 services:
   vilicus:
-    container_name: vilicus
-    environment:
-      GOPATH: /go/
-      DATABASE_URL: postgresql://username:password@vilicus_postgres:5432/vilicus_db?sslmode=disable
     build:
       context: ../
       dockerfile: deployments/dockerfiles/vilicus/dev/Dockerfile
     command: sh -c "go run cmd/migration/main.go && go run cmd/api/main.go"
-    ports:
-      - "8040:8080"
     volumes:
         - "../:/go/src/github.com/edersonbrilhante/vilicus"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: 100m
-    networks:
-      - vilicus_net
-    depends_on:
-      - postgres
-      - anchore_engine
-      - trivy
-      - clair
-
-  postgres:
-    container_name: vilicus_postgres
-    environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
-    build:
-      context: ../
-      dockerfile: deployments/dockerfiles/postgres/Dockerfile
-    ports:
-      - "5432"
-    networks:
-      - vilicus_net
-
-networks:
-    vilicus_net:
-    
