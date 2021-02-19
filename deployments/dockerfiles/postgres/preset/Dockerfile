@@ -1,6 +1,6 @@
 FROM vilicus/postgres:base
 
-ARG DUMP_PATH=local-volumes/dump-sql
+ARG DUMP_PATH
 
 COPY deployments/dockerfiles/postgres/scripts/restore-dbs.sh /docker-entrypoint-initdb.d/02.restore-dbs.sh
 
