@@ -14,33 +14,6 @@ CMD_API ?= ./cmd/api/main.go
 CMD_CLIENT ?= ./cmd/client/main.go
 CMD_MIGRATION ?= ./cmd/migration/main.go
 
-DOCKER_COMPOSE_FILE := ./deployments/docker-compose.yml
-DOCKER_COMPOSE_DEV_FILE := deployments/docker-compose.dev.yml
-DOCKER_COMPOSE_ADMINER_FILE := deployments/docker-compose.adminer.yml
-DOCKER_COMPOSE_UPDATER_FILE := deployments/docker-compose.updater.yml
-DOCKER_COMPOSE_PRESETFILES_FILE := deployments/docker-compose.preset-files.yml
-
-DOCKER_COMPOSE_CMD=docker-compose -f $(DOCKER_COMPOSE_FILE)
-ifdef DCDEV
-    DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_DEV_FILE)
-else
-    ifdef DCUPDATER
-        DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_UPDATER_FILE)
-    endif
-endif
-ifdef DCADMINER
-    DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_ADMINER_FILE)
-endif
-ifdef DCPRESETFILES
-    DOCKER_COMPOSE_CMD+=-f $(DOCKER_COMPOSE_PRESETFILES_FILE)
-endif
-ifdef DCUP
-    DOCKER_COMPOSE_CMD+=up -d
-endif
-ifdef DCBUILD
-    DOCKER_COMPOSE_CMD+=build
-endif
-
 COLOR_RESET=\033[0;39;49m
 COLOR_BOLD=\033[1m
 COLOR_ULINE=\033[4m
@@ -71,91 +44,85 @@ build-linux: build-api-linux build-client-linux build-migration-linux
 
 ## Builds API code into a binary
 build-api:
-    $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
+	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
 
 ## Builds API code using linux architecture into a binary
 build-api-linux:
-    GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_API_BIN)" $(CMD_API)
 
 ## Builds API code into a binary
 build-client:
-    $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
+	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
 
 ## Builds API code using linux architecture into a binary
 build-client-linux:
-    GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
 
 ## Builds all image locally with the latest tags
 build-images:
-    chmod +x scripts/build-.sh
-    ./scripts/build-images.sh
+	chmod +x scripts/build-.sh
+	./scripts/build-images.sh
 
 ## Builds preset images locally with the latest tags
 build-preset-images:
-    chmod +x scripts/preset/build-images.sh
-    ./scripts/preset/build-images.sh
+	chmod +x scripts/preset/build-images.sh
+	./scripts/preset/build-images.sh
 
 ## Builds API migration code into a binary
 build-migration:
-    $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
+	$(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
 
 ## Builds API migration code using linux architecture into a binary
 build-migration-linux:
-    GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_MIGRATION_BIN)" $(CMD_MIGRATION)
 
 ## Checks dependencies
 check-deps:
-    $(GO) mod tidy && $(GO) mod verify
+	$(GO) mod tidy && $(GO) mod verify
 
 ## Runs a security static analysis using Gosec
 check-sec:
-    GO111MODULE=off $(GO) get -u github.com/securego/gosec/cmd/gosec
-    $(GOSEC) ./...
+	GO111MODULE=off $(GO) get -u github.com/securego/gosec/cmd/gosec
+	$(GOSEC) ./...
 
-
-## Composes Vilicus environment for updater. Params: DCDEV/DCUPDATER, DCADMINER, DCPRESETFILES, DCUP/DCBUILD
-compose:
-    eval $(DOCKER_COMPOSE_CMD)
-    
-
-## Prints help messag"
+## Prints help message
 help:
 
-    @awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-    printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
-    printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
-    printf "\n"
-    printf "${COLOR_BLUE}    make <target>${COLOR_RESET}"
-    printf "\n"
-    printf "\n"
-    printf "${COLOR_BOLD}  Targets:${COLOR_RESET}"
-    printf "\n"
-    awk '/^[a-zA-Z\-\_0-9\.%]+:/ { \
-        helpMessage = match(lastLine, /^## (.*)/); \
-        if (helpMessage) { \
-            helpCommand = substr($$1, 0, index($$1, ":")-1); \
-            helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-            printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
-        } \
-    } \
-    { lastLine = $$0 }' $(MAKEFILE_LIST) | sort
-    printf "\n"
+	printf "\n${COLOR_YELO}${PROJECT}\n-------\n${COLOR_RESET}"
+	printf "${COLOR_BOLD}  Usage:${COLOR_RESET}"
+	printf "\n"
+	printf "${COLOR_BLUE}    make <target>${COLOR_RESET}"
+	printf "\n"
+	printf "\n"
+	printf "${COLOR_BOLD}  Targets:${COLOR_RESET}"
+	printf "\n"
+	awk '/^[a-zA-Z\-\_0-9\.%]+:/ { \
+		helpMessage = match(lastLine, /^## (.*)/); \
+		if (helpMessage) { \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
+			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+			printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+		} \
+	} \
+	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort
+	printf "\n"
 
 ## Runs all Vilicus lint
 lint:
-    GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
-    $(GOLINT) ./...
+	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
+	$(GOLINT) ./...
 
 ## Push images to hub.docker
 push-images:
-    chmod +x scripts/push-images.sh
-    ./scripts/push-images.sh
+	chmod +x scripts/push-images.sh
+	./scripts/push-images.sh
 
 ## Push preset images to hub.docker
 push-preset-images:
-    chmod +x scripts/preset/push-images.sh
-    ./scripts/preset/push-images.sh
+	chmod +x scripts/preset/push-images.sh
+	./scripts/preset/push-images.sh
 
 ## Builds and push images with the latest tags
 update-images: build-images push-images
