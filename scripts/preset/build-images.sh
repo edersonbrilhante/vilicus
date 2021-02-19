@@ -8,6 +8,8 @@ set -u
 COLOR_RESET="\033[0;39;49m"
 COLOR_YELO="\033[38;5;227m"
 
+DUMP_PATH=./local-volumes/dump-sql
+
 run_postgres () {
     printf $COLOR_YELO"Running postgres\n"$COLOR_RESET
     docker exec vilicus_postgres sh -c 'docker-entrypoint.sh postgres' &
@@ -29,7 +31,7 @@ preset_volume () {
     printf $COLOR_YELO"Run docker commit for postgres: Done\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build preset postgres: Starting\n"$COLOR_RESET
-    docker build -f deployments/dockerfiles/postgres/preset/volume/Dockerfile -t vilicus/postgres:preset-volume .
+    docker build -f deployments/dockerfiles/postgres/preset/volume/Dockerfile -t vilicus/postgres:preset-volume-latest .
     printf $COLOR_YELO"Build preset postgres: Done\n"$COLOR_RESET
 }
 
@@ -44,15 +46,38 @@ preset_files () {
     printf $COLOR_YELO"Dump databases: Done\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build postgres with dump files: Starting\n"$COLOR_RESET
-    docker build -f deployments/dockerfiles/postgres/preset/Dockerfile -t vilicus/postgres:preset-files .
+    docker build --build-arg DUMP_PATH=$DUMP_PATH -f deployments/dockerfiles/postgres/preset/Dockerfile -t vilicus/postgres:preset-files-latest .
     printf $COLOR_YELO"Build postgres with dump files: Done\n"$COLOR_RESET
 }
 
-preset_files
+run_updater () {
+    printf $COLOR_YELO"Run compose: Starting\n"$COLOR_RESET
+    docker-compose -f deployments/docker-compose.yml up --build -d --force  --remove-orphans --renew-anon-volumes
+    printf $COLOR_YELO"Run compose: Done\n"$COLOR_RESET
 
-printf $COLOR_YELO"Sleep for 3 hours: Starting\n"$COLOR_RESET
-sleep 10800 # 3 hours
-printf $COLOR_YELO"Sleep for 3 hours: Done\n"$COLOR_RESET
+    run_postgres
+
+    printf $COLOR_YELO"Sleep for 3 hours: Starting\n"$COLOR_RESET
+    sleep 10800 # 3 hours
+    printf $COLOR_YELO"Sleep for 3 hours: Done\n"$COLOR_RESET
+
+    printf $COLOR_YELO"Stop app containers: Starting\n"$COLOR_RESET
+    docker stop clair vilicus anchore_engine trivy
+    printf $COLOR_YELO"Stop app containers: Done\n"$COLOR_RESET
+}
+
+no_updater() {
+    printf $COLOR_YELO"Run compose: Starting\n"$COLOR_RESET
+    docker-compose -f deployments/docker-compose.yml up --build -d --force  --remove-orphans --renew-anon-volumes postgres
+    printf $COLOR_YELO"Run compose: Done\n"$COLOR_RESET
+
+}
+
+if [[ $1 == "updater" ]]; then
+    echo "run_updater"
+else
+    echo "no_updater"
+fi
 
 printf $COLOR_YELO"Run Preset Volume: Starting\n"$COLOR_RESET
 preset_volume
