@@ -36,12 +36,12 @@ func (c *Clair) Analyzer(al *types.Analysis) error {
 	if err != nil {
 		return err
 	}
-	_, err = c.checkAnalysisStatus(imgResp)
+	_, err = c.monitorResult(imgResp.ManifestHash)
 	if err != nil {
 		return err
 	}
 
-	vulnResp, err := c.getVuln(imgResp)
+	vulnResp, err := c.getVuln(imgResp.ManifestHash)
 	if err != nil {
 		return err
 	}
@@ -117,41 +117,56 @@ func (c *Clair) addImage() (indexReport, error) {
 	return imgResp, err
 }
 
-func (c *Clair) checkAnalysisStatus(imgResp indexReport) (bool, error) {
-	if imgResp.State == "IndexFinished" {
-		return true, nil
+func (c *Clair) monitorResult(rid string) (indexReport, error) {
+	ireport := indexReport{}
+	timeout := time.After(60 * time.Minute)
+	retryTick := time.NewTicker(10 * time.Second)
+
+	for {
+		select {
+		case <-timeout:
+			return ireport, errors.New("time out")
+		case <-retryTick.C:
+			fmt.Println(ireport.State)
+			ireport, err := c.getAnalysis(rid)
+			if err != nil {
+				return ireport, err
+			}
+			if ireport.State == "IndexFinished" {
+				return ireport, nil
+			}
+			if ireport.State == "IndexError" {
+				return ireport, errors.New("analysis failed: " + ireport.Err)
+			}
+		}
 	}
 
-	fmt.Println("Sleeping 10s")
-	time.Sleep(10000 * time.Millisecond) //TODO:use select instead sleep
-
-	client := resty.New()
-
-	newImgResp := indexReport{}
-	resp, err := client.R().
-		Get(c.Config.URL + "/indexer/api/v1/index_report/" + imgResp.ManifestHash)
-
-	if err == nil {
-		err = json.Unmarshal(resp.Body(), &newImgResp)
-	}
-
-	if err != nil {
-		return false, err
-	}
-
-	return c.checkAnalysisStatus(newImgResp)
 }
 
-func (c *Clair) getVuln(imgResp indexReport) (vulnerabilityReport, error) {
+func (c *Clair) getAnalysis(rid string) (indexReport, error) {
 	client := resty.New()
+	ireport := indexReport{}
 
-	vulnResp := vulnerabilityReport{}
 	resp, err := client.R().
-		Get(c.Config.URL + "/matcher/api/v1/vulnerability_report/" + imgResp.ManifestHash)
+		Get(c.Config.URL + "/indexer/api/v1/index_report/" + rid)
+	if err != nil {
+		return ireport, err
+	}
+	err = json.Unmarshal(resp.Body(), &ireport)
+
+	return ireport, err
+
+}
+
+func (c *Clair) getVuln(rid string) (vulnerabilityReport, error) {
+	client := resty.New()
+	vulnResp := vulnerabilityReport{}
+
+	resp, err := client.R().
+		Get(c.Config.URL + "/matcher/api/v1/vulnerability_report/" + rid)
 	if err != nil {
 		return vulnResp, err
 	}
-
 	err = json.Unmarshal(resp.Body(), &vulnResp)
 
 	return vulnResp, err
