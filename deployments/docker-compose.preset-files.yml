@@ -6,8 +6,8 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_MULTIPLE_DATABASES: vilicus_db,clair_db,anchore_db
-    volumes:
-        - "postgres_vol:/var/lib/postgresql/data/"
+      PGDATA: /data
+    entrypoint: "tail -f /dev/null"
 
 volumes:
   postgres_vol:
