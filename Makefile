@@ -60,13 +60,13 @@ build-client-linux:
 
 ## Builds all image locally with the latest tags
 build-images:
-	chmod +x scripts/build-images.sh
+	chmod +x scripts/build-.sh
 	./scripts/build-images.sh
 
-## Builds preset postgres
-build-preset-postgres:
-	chmod +x scripts/build-preset-postgres.sh
-	./scripts/build-preset-postgres.sh
+## Builds preset images locally with the latest tags
+build-preset-images:
+	chmod +x scripts/preset/build-images.sh
+	./scripts/preset/build-images.sh
 
 ## Builds API migration code into a binary
 build-migration:
@@ -127,10 +127,13 @@ push-images:
 	chmod +x scripts/push-images.sh
 	./scripts/push-images.sh
 
-## Push images to hub.docker
-push-preset-postgres:
-	chmod +x scripts/push-preset-postgres.sh
-	./scripts/push-preset-postgres.sh
+## Push preset images to hub.docker
+push-preset-images:
+	chmod +x scripts/preset/push-images.sh
+	./scripts/preset/push-images.sh
 
 ## Builds and push images with the latest tags
 update-images: build-images push-images
+
+## Builds and push preset images with the latest tags
+update-preset-images: build-preset-images push-preset-images
