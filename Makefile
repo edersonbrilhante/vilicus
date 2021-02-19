@@ -66,7 +66,12 @@ build-images:
 ## Builds preset images locally with the latest tags
 build-preset-images:
 	chmod +x scripts/preset/build-images.sh
-	./scripts/preset/build-images.sh
+	./scripts/preset/build-images.sh no_updater
+
+## Builds preset images(with database updater) locally with the latest tags
+build-preset-images-updater:
+	chmod +x scripts/preset/build-images.sh 
+	./scripts/preset/build-images.sh updater
 
 ## Builds API migration code into a binary
 build-migration:
@@ -103,7 +108,7 @@ help:
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")-1); \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "${COLOR_BLUE}    make %-24s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+			printf "${COLOR_BLUE}    make %-30s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort
