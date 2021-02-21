@@ -12,21 +12,16 @@ stages:
       type != cron
   - name: build-preset-postgres
     if: |
-      branch = main AND \
-      type = cron
+      branch = main
 
 jobs:
   include:
     - stage: build-images
       script:         
-        - make build-images
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - make push-images
+        - make update-images
     - stage: build-preset-postgres
       script:         
-        - make build-images
-        - make compose-updater
-        - travis_wait 300 sleep infinity
+        - travis_wait 600 sleep infinity &
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - make build-preset-postgres
-        - make push-preset-postgres
+        - make update-preset-images
