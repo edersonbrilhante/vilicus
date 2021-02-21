@@ -52,7 +52,7 @@ preset_files () {
 
 run_updater () {
     printf $COLOR_YELO"Run compose: Starting\n"$COLOR_RESET
-    docker-compose -f deployments/docker-compose.yml up --build -d --force  --remove-orphans --renew-anon-volumes
+    docker-compose -f deployments/docker-compose.yml -f deployments/docker-compose.updater.yml up --build -d --force  --remove-orphans --renew-anon-volumes
     printf $COLOR_YELO"Run compose: Done\n"$COLOR_RESET
 
     run_postgres
@@ -66,18 +66,7 @@ run_updater () {
     printf $COLOR_YELO"Stop app containers: Done\n"$COLOR_RESET
 }
 
-no_updater() {
-    printf $COLOR_YELO"Run compose: Starting\n"$COLOR_RESET
-    docker-compose -f deployments/docker-compose.yml up --build -d --force  --remove-orphans --renew-anon-volumes postgres
-    printf $COLOR_YELO"Run compose: Done\n"$COLOR_RESET
-
-}
-
-if [[ $1 == "updater" ]]; then
-    echo "run_updater"
-else
-    echo "no_updater"
-fi
+run_updater
 
 printf $COLOR_YELO"Run Preset Volume: Starting\n"$COLOR_RESET
 preset_volume
