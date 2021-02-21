@@ -112,6 +112,9 @@ func (c *Clair) addImage() (indexReport, error) {
 	if err != nil {
 		return imgResp, err
 	}
+	if resp.StatusCode() != 201 {
+		return imgResp, errors.New("analysis failed: " + resp.String())
+	}
 	err = json.Unmarshal(resp.Body(), &imgResp)
 
 	return imgResp, err
@@ -152,6 +155,9 @@ func (c *Clair) getAnalysis(rid string) (indexReport, error) {
 	if err != nil {
 		return ireport, err
 	}
+	if resp.StatusCode() != 200 {
+		return ireport, errors.New("analysis failed: " + resp.String())
+	}
 	err = json.Unmarshal(resp.Body(), &ireport)
 
 	return ireport, err
@@ -166,6 +172,9 @@ func (c *Clair) getVuln(rid string) (vulnerabilityReport, error) {
 		Get(c.Config.URL + "/matcher/api/v1/vulnerability_report/" + rid)
 	if err != nil {
 		return vulnResp, err
+	}
+	if resp.StatusCode() != 200 {
+		return vulnResp, errors.New("analysis failed: " + resp.String())
 	}
 	err = json.Unmarshal(resp.Body(), &vulnResp)
 
