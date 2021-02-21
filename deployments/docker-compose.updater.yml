@@ -7,3 +7,7 @@ services:
 
   postgres:
     entrypoint: "tail -f /dev/null"
+
+  trivy:
+    entrypoint: "tail -f /dev/null"
+    command: []

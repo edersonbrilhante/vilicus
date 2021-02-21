@@ -51,8 +51,8 @@ services:
 
   trivy:
     container_name: trivy
-    command: "server --listen 0.0.0.0:8080"
-    image: vilicus/trivy:latest
+    command: "server --listen 0.0.0.0:8080 --skip-update"
+    image: vilicus/trivy:preset
     ports:
       - "8042:8080"
     networks:
