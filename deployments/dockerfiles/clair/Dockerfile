@@ -1,7 +1,7 @@
 FROM korbin/dockerize:latest as dockerize
 
-FROM quay.io/projectquay/clair:4.0.0
-LABEL vilicus.app.version=4.0.0
+FROM quay.io/projectquay/clair:4.0.2
+LABEL vilicus.app.version=4.0.2
 
 COPY deployments/dockerfiles/clair/scanner.yaml /opt/vilicus/data/scanner.yaml
 COPY deployments/dockerfiles/clair/updater.yaml /opt/vilicus/data/updater.yaml

@@ -1,6 +1,6 @@
 introspection_addr: 0.0.0.0:6061
 http_listen_addr: 0.0.0.0:6060
-log_level: error
+log_level: debug
 indexer:
   connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
   scanlock_retry: 10

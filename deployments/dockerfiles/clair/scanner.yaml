@@ -15,9 +15,12 @@ matcher:
   disable_updaters: true
 notifier:
   connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
-  migrations: true
-  delivery_interval: 5m
-  poll_interval: 15m
+  migrations: false
+  delivery_interval: 15h
+  poll_interval: 15h
+  webhook: null
+  amqp: null
+  stomp: null
 updaters:
   sets:
     - none
