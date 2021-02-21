@@ -64,14 +64,19 @@ build-images:
 	./scripts/build-images.sh
 
 ## Builds preset images locally with the latest tags
-build-preset-images:
+build-preset-images: build-postgres-preset-images build-trivy-preset-image
 	chmod +x scripts/preset/build-images.sh
 	./scripts/preset/build-images.sh no_updater
 
-## Builds preset images(with database updater) locally with the latest tags
-build-preset-images-updater:
-	chmod +x scripts/preset/build-images.sh 
-	./scripts/preset/build-images.sh updater
+## Builds preset postgres images locally with the latest tags
+build-postgres-preset-images:
+	chmod +x scripts/preset/build-postgres-images.sh
+	./scripts/preset/build-postgres-images.sh
+
+## Builds preset trivy image locally with the latest tag
+build-trivy-preset-image:
+	chmod +x scripts/preset/build-trivy-image.sh
+	./scripts/preset/build-trivy-image.sh
 
 ## Builds API migration code into a binary
 build-migration:
