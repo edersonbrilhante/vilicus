@@ -60,7 +60,7 @@ build-client-linux:
 
 ## Builds all image locally with the latest tags
 build-images:
-	chmod +x scripts/build-.sh
+	chmod +x scripts/build-images.sh
 	./scripts/build-images.sh
 
 ## Builds preset images locally with the latest tags
