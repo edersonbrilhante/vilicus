@@ -166,6 +166,11 @@ func (c *Clair) getAnalysis(rid string) (indexReport, error) {
 
 func (c *Clair) getVuln(rid string) (vulnerabilityReport, error) {
 	client := resty.New()
+	client.SetRetryCount(3)
+	client.AddRetryCondition(resty.RetryConditionFunc(func(r *resty.Response, _ error) bool {
+		return r.StatusCode() >= http.StatusInternalServerError
+	}))
+
 	vulnResp := vulnerabilityReport{}
 
 	resp, err := client.R().
