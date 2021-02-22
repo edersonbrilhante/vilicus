@@ -122,9 +122,23 @@ lint:
 	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
 	$(GOLINT) ./...
 
-push-images:
-	chmod +x scripts/push-images.sh
-	./scripts/push-images.sh
+push-images: push-anchore-image push-clair-image push-trivy-image push-vilicus-image
+
+push-anchore-image:
+	chmod +x scripts/push-anchore-image.sh
+	./scripts/push-anchore-image.sh
+
+push-clair-image:
+	chmod +x scripts/push-clair-image.sh
+	./scripts/push-clair-image.sh
+
+push-trivy-image:
+	chmod +x scripts/push-trivy-image.sh
+	./scripts/push-trivy-image.sh
+
+push-vilicus-image:
+	chmod +x scripts/push-vilicus-image.sh
+	./scripts/push-vilicus-image.sh
 
 ## Builds and push images with the latest tags
 update-images: build-images push-images

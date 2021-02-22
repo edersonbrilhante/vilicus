@@ -10,26 +10,26 @@ stages:
     if: |
       branch = main OR \
       type == cron
-  - name: push-images
-    if: |
-      branch = main OR \
-      type == cron
 
 jobs:
   include:
     - stage: build-images
       script:                 
-        - make build-anchore-image
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
+      - make build-anchore-image
+        - make push-anchore-image
     - stage: build-images
       script:                 
-        - make build-clair-image
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
+      - make build-clair-image
+        - make push-clair-image
     - stage: build-images
       script:                 
-        - make build-trivy-image
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
+      - make build-trivy-image
+        - make push-trivy-image
     - stage: build-images
       script:                 
-        - make build-vilicus-image
-    - stage: push-images
-      script:         
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - make push-images
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
+      - make build-vilicus-image
+        - make push-vilicus-image
