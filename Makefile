@@ -58,23 +58,21 @@ build-client:
 build-client-linux:
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
 
-## Builds all image locally with the latest tags
-build-images:
-	chmod +x scripts/build-images.sh
-	./scripts/build-images.sh
+build-images: build-anchore-image build-clair-image build-trivy-image build-vilicus-image
 
-## Builds preset images locally with the latest tags
-build-preset-images: build-postgres-preset-images build-trivy-preset-image
+build-anchore-image:
 	chmod +x scripts/preset/build-images.sh
 	./scripts/preset/build-images.sh no_updater
 
-## Builds preset postgres images locally with the latest tags
-build-postgres-preset-images:
+build-clair-image:
 	chmod +x scripts/preset/build-postgres-images.sh
 	./scripts/preset/build-postgres-images.sh
 
-## Builds preset trivy image locally with the latest tag
-build-trivy-preset-image:
+build-trivy-image:
+	chmod +x scripts/preset/build-trivy-image.sh
+	./scripts/preset/build-trivy-image.sh
+
+build-vilicus-image:
 	chmod +x scripts/preset/build-trivy-image.sh
 	./scripts/preset/build-trivy-image.sh
 
@@ -124,18 +122,9 @@ lint:
 	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
 	$(GOLINT) ./...
 
-## Push images to hub.docker
 push-images:
 	chmod +x scripts/push-images.sh
 	./scripts/push-images.sh
 
-## Push preset images to hub.docker
-push-preset-images:
-	chmod +x scripts/preset/push-images.sh
-	./scripts/preset/push-images.sh
-
 ## Builds and push images with the latest tags
 update-images: build-images push-images
-
-## Builds and push preset images with the latest tags
-update-preset-images: build-preset-images push-preset-images
