@@ -85,7 +85,7 @@ services:
     container_name: clair
     command: sh -c 'dockerize -wait tcp://clairdb:5432 -wait-retry-interval 10s -timeout 1000s /bin/clair'
     environment:
-      CLAIR_CONF: /opt/vilicus/data/scanner.yaml
+      CLAIR_CONF: /opt/vilicus/data/config.yaml
       CLAIR_MODE: combo
     image: vilicus/clair:latest
     ports:
