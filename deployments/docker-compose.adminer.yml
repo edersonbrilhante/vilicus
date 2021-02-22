@@ -7,5 +7,3 @@ services:
       - "8045:8080"
     networks:
       - vilicus_net
-    depends_on:
-      - postgres
