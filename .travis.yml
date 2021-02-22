@@ -6,14 +6,30 @@ services:
   - docker
 
 stages:
-  - name: update-images
+  - name: build-images
+    if: |
+      branch = main OR \
+      type == cron
+  - name: push-images
     if: |
       branch = main OR \
       type == cron
 
 jobs:
   include:
-    - stage: update-images
+    - stage: build-images
+      script:                 
+        - make build-anchore-image
+    - stage: build-images
+      script:                 
+        - make build-clair-image
+    - stage: build-images
+      script:                 
+        - make build-trivy-image
+    - stage: build-images
+      script:                 
+        - make build-vilicus-image
+    - stage: push-images
       script:         
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - make update-images
+        - make push-images
