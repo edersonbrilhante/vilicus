@@ -1,13 +1,80 @@
 version: '3'
 services:
   clair:
+    container_name: clair
+    command: sh -c 'dockerize -wait tcp://clairdb:5432 -wait-retry-interval 10s -timeout 1000s /bin/clair -conf=/opt/vilicus/data/scanner.yaml'
     environment:
       CLAIR_CONF: /opt/vilicus/data/updater.yaml
       CLAIR_MODE: combo
+    image: vilicus/clair:latest
+    ports:
+      - "8043:6060"
+      - "8044:6061"
+    networks:
+      - vilicus_net
+    depends_on:
+      - clairdb
 
-  postgres:
+  clairdb:
+    container_name: clairdb
+    image: postgres:9.6.21-alpine
     entrypoint: "tail -f /dev/null"
+    environment:
+      PGDATA: /data
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432"
+    networks:
+      - vilicus_net
 
   trivy:
+    container_name: trivy
+    image: vilicus/trivy:latest
     entrypoint: "tail -f /dev/null"
-    command: []
+    networks:
+      - vilicus_net
+
+  anchore:
+    container_name: anchore
+    command: sh -c 'dockerize -wait tcp://anchoredb:5432 -wait-retry-interval 60s -timeout 10000s anchore-manager service start --all'
+    environment:
+      ANCHORE_HOST_ID: dockerhostid-anchore-engine
+      ANCHORE_FEEDS_ENABLED: "False"
+      ANCHORE_ENDPOINT_HOSTNAME: anchore-engine
+      ANCHORE_DB_NAME: postgres
+      ANCHORE_DB_HOST: anchoredb
+      ANCHORE_DB_USER: username
+      ANCHORE_DB_PASSWORD: password
+      ANCHORE_DB_PORT: 5432
+      ANCHORE_ENDPOINT_HOSTNAME: localhost
+      ANCHORE_ENDPOINT_PORT: 8228
+      ANCHORE_MAX_COMPRESSED_IMAGE_SIZE_MB: -1
+      ANCHORE_HINTS_ENABLED: "False"
+    image: vilicus/anchore:latest
+    ports:
+      - "8041:8228"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+    networks:
+      - vilicus_net
+    depends_on:
+      - anchoredb
+
+  anchoredb:
+    container_name: anchoredb
+    image: vilicus/anchoredb:files
+    entrypoint: "tail -f /dev/null"
+    environment:
+      PGDATA: /data
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432"
+    networks:
+      - vilicus_net
+
+networks:
+  vilicus_net:
