@@ -1,4 +1,4 @@
-FROM vilicus/trivy:local-update as db
+FROM vilicus/trivydb:local-update as db
 
 FROM vilicus/trivy:latest
 
