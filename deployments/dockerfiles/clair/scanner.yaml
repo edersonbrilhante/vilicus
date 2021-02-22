@@ -2,25 +2,20 @@ introspection_addr: 0.0.0.0:6061
 http_listen_addr: 0.0.0.0:6060
 log_level: debug
 indexer:
-  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
+  connstring: host=clairdb port=5432 user=username password=password dbname=postgres sslmode=disable connect_timeout=20
   scanlock_retry: 10
   layer_scan_concurrency: 5
   migrations: true
   airgap: true
 matcher:
-  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
+  connstring: host=clairdb port=5432 user=username password=password dbname=postgres sslmode=disable connect_timeout=20
   max_conn_pool: 100
   run: ""
   migrations: true
   disable_updaters: true
+  period: 100h
 notifier:
-  connstring: host=vilicus_postgres port=5432 user=username password=password dbname=clair_db sslmode=disable
-  migrations: false
-  delivery_interval: 15h
-  poll_interval: 15h
-  webhook: null
-  amqp: null
-  stomp: null
-updaters:
-  sets:
-    - none
+  connstring: host=clairdb port=5432 user=username password=password dbname=postgres sslmode=disable connect_timeout=20
+  migrations: true
+  delivery_interval: 5m
+  poll_interval: 15m
