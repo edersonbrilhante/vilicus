@@ -61,20 +61,20 @@ build-client-linux:
 build-images: build-anchore-image build-clair-image build-trivy-image build-vilicus-image
 
 build-anchore-image:
-	chmod +x scripts/preset/build-anchore-image.sh
-	./scripts/preset/build-anchore-image.sh
+	chmod +x scripts/build-anchore-image.sh
+	./scripts/build-anchore-image.sh
 
 build-clair-image:
-	chmod +x scripts/preset/build-clair-image.sh
-	./scripts/preset/build-clair-image.sh
+	chmod +x scripts/build-clair-image.sh
+	./scripts/build-clair-image.sh
 
 build-trivy-image:
-	chmod +x scripts/preset/build-trivy-image.sh
-	./scripts/preset/build-trivy-image.sh
+	chmod +x scripts/build-trivy-image.sh
+	./scripts/build-trivy-image.sh
 
 build-vilicus-image:
-	chmod +x scripts/preset/build-vilicus-image.sh
-	./scripts/preset/build-vilicus-image.sh
+	chmod +x scripts/build-vilicus-image.sh
+	./scripts/build-vilicus-image.sh
 
 ## Builds API migration code into a binary
 build-migration:
