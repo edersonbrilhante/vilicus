@@ -6,22 +6,14 @@ services:
   - docker
 
 stages:
-  - name: build-images
+  - name: update-images
     if: |
-      branch = main AND \
-      type != cron
-  - name: build-preset-postgres
-    if: |
-      branch = main
+      branch = main OR \
+      type == cron
 
 jobs:
   include:
-    - stage: build-images
+    - stage: update-images
       script:         
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - make update-images
-    - stage: build-preset-postgres
-      script:         
-        - travis_wait 600 sleep infinity &
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - make update-preset-images
