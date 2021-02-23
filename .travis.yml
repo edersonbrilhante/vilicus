@@ -17,19 +17,19 @@ jobs:
       script:                 
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
       - make build-anchore-image
-        - make push-anchore-image
+      - make push-anchore-image
     - stage: build-images
       script:                 
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
       - make build-clair-image
-        - make push-clair-image
+      - make push-clair-image
     - stage: build-images
       script:                 
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
       - make build-trivy-image
-        - make push-trivy-image
+      - make push-trivy-image
     - stage: build-images
       script:                 
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  
       - make build-vilicus-image
-        - make push-vilicus-image
+      - make push-vilicus-image
