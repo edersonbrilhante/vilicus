@@ -68,6 +68,7 @@ func (t *Trivy) Parser() error {
 				Fix:            v.FixedVersion,
 				URL:            v.References,
 				Name:           v.VulnerabilityID,
+				Vendor:         "Trivy",
 				Severity:       strings.Title(strings.ToLower(v.Severity)),
 				PackageName:    v.PkgName,
 				PackageVersion: v.InstalledVersion,
