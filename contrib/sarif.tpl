@@ -34,10 +34,10 @@
               "id": "[VULICUS][{{ $vuln.Vendor }}][{{ $vuln.Severity }}] {{ $vuln.Name }} {{ $vuln.PackageName }} {{ $vuln.PackageVersion }}",
               "name": "dockerfile_scan",
               "shortDescription": {
-                "text": {{ printf "%v %v Severity: %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
+                "text": {{ printf "[%v] %v Severity: %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
               },
               "fullDescription": {
-                "text": {{ printf "%v %v Severity: %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
+                "text": {{ printf "[%v] %v Severity: %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
               },
               "help": {
                 "text": {{ printf "Vulnerability: %v\nSeverity: %v\nPackage: %v\nVersion: %v\nFixed: %v\nLink: [%v](%v)\n" $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion $vuln.Fix $vuln.Name $help_link | printf "%q" }},
@@ -86,7 +86,7 @@
           "level": "error",
           "kind": "fail",
           "message": {
-            "text": {{ printf "%v - %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
+            "text": {{ printf "[%v] %v Severity: %v Package: %v Version: %v" $vuln.Vendor $vuln.Name $vuln.Severity $vuln.PackageName $vuln.PackageVersion | printf "%q" }}
           },
           "locations": [{
             "physicalLocation": {
