@@ -6,13 +6,13 @@ services:
       GOPATH: /go/
       DATABASE_URL: postgresql://username:password@vilicusdb:5432/postgres?sslmode=disable
     image: vilicus/vilicus:latest
-    command: sh -c 'dockerize -wait tcp://vilicusdb:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 10s -timeout 1000s vilicus-migration && vilicus-api -p /run/conf.yaml'
+    command: sh -c 'dockerize -wait tcp://vilicusdb:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 10s -timeout 1000s vilicus-migration && vilicus-api -p /opt/vilicus/configs/conf.yaml'
     ports:
       - "8040:8080"
     logging:
       driver: "json-file"
       options:
-        max-size: 100m
+        max-size: 10m
     networks:
       - vilicus_net
     depends_on:
@@ -43,7 +43,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: 100m
+        max-size: 10m
     networks:
       - vilicus_net
     depends_on:
@@ -67,6 +67,10 @@ services:
        - trivydb_vol:/root/.cache/trivy/
     ports:
       - "8042:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
     depends_on:
@@ -78,6 +82,10 @@ services:
     entrypoint: "tail -f /dev/null"
     volumes:
        - trivydb_vol:/root/.cache/trivy/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
 
@@ -91,6 +99,10 @@ services:
     ports:
       - "8043:6060"
       - "8044:6061"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
     depends_on:
@@ -103,6 +115,10 @@ services:
       PGDATA: /data
     ports:
       - "5432"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
 
@@ -115,6 +131,10 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
 

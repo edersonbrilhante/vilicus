@@ -5,5 +5,9 @@ services:
     image: adminer
     ports:
       - "8045:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
