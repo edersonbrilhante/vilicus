@@ -22,6 +22,7 @@ COPY --from=builder /build/vilicus-api-bin /bin/vilicus-api
 COPY --from=builder /build/vilicus-migration-bin /bin/vilicus-migration
 COPY --from=builder /build/vilicus-client-bin /bin/vilicus-client
 
-COPY --from=builder /build/configs/conf.docker-compose.yaml /run/conf.yaml
+COPY --from=builder /build/configs/conf.docker-compose.yaml /opt/vilicus/configs/conf.yaml
+COPY --from=builder /build/contrib /opt/vilicus/contrib
 
 COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
