@@ -69,6 +69,7 @@ func (c *Clair) Parser() error {
 				Fix:            v.FixedInVersion,
 				URL:            strings.Split(v.Links, " "),
 				Name:           v.Name,
+				Vendor:         "Clair",
 				Severity:       v.NormalizedSeverity,
 				PackageName:    pkg.Name,
 				PackageVersion: pkg.Version,

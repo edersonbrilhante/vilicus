@@ -52,6 +52,7 @@ func (a *Anchore) Parser() error {
 			Fix:            v.Fix,
 			URL:            []string{v.URL},
 			Name:           v.Vuln,
+			Vendor:         "AnchoreEngine",
 			Severity:       v.Severity,
 			PackageName:    v.PackageName,
 			PackageVersion: v.PackageVersion,

@@ -1,0 +1,20 @@
+repos:
+-   repo: https://github.com/tekwizely/pre-commit-golang
+    rev: v0.8.1
+    hooks:
+    #
+    # Go Build
+    #
+    -   id: go-build-mod
+    #
+    # Go Test
+    #
+    -   id: go-test-mod
+    #
+    # Go Vet
+    #
+    -   id: go-vet
+    #
+    # Formatters
+    #
+    -   id: go-fmt
