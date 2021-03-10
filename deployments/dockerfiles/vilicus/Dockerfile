@@ -1,3 +1,5 @@
+FROM vilicus/registry:latest as certs
+
 FROM golang:1.15-alpine AS builder
 
 WORKDIR /build/
@@ -15,7 +17,11 @@ FROM korbin/dockerize:latest as dockerize
 FROM golang:1.15-alpine AS final
 LABEL vilicus.app.version=dev
 
+COPY --from=certs /opt/vilicus/certs/vilicus.crt /usr/local/share/ca-certificates
+RUN update-ca-certificates
+
 WORKDIR /run
+
 USER nobody:nobody
 
 COPY --from=builder /build/vilicus-api-bin /bin/vilicus-api

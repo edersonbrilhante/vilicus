@@ -138,6 +138,22 @@ services:
     networks:
       - vilicus_net
 
+  registry:
+    container_name: registry
+    image: vilicus/registry:latest
+    ports:
+      - "5000:5000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    restart: always
+    hostname: localregistry.vilicus.svc
+    networks:
+       vilicus_net:    
+          aliases:
+            - localregistry.vilicus.svc
+
 networks:
   vilicus_net:
 
