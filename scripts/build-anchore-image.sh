@@ -66,7 +66,7 @@ build_anchore() {
     printf $COLOR_YELO"Build anchore image: Done\n\n"$COLOR_RESET
 }
 
-# build_anchore
+build_anchore
 
 build_anchoredb_files
 

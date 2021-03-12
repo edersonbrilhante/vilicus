@@ -58,7 +58,7 @@ build-client:
 build-client-linux:
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(VILICUS_CLIENT_BIN)" $(CMD_CLIENT)
 
-build-images: build-anchore-image build-clair-image build-registry-image build-trivy-image build-vilicus-image
+build-images: build-registry-image build-anchore-image build-clair-image build-trivy-image build-vilicus-image
 
 build-anchore-image:
 	chmod +x scripts/build-anchore-image.sh
@@ -126,7 +126,7 @@ lint:
 	GO111MODULE=off $(GO) get -u golang.org/x/lint/golint
 	$(GOLINT) ./...
 
-push-images: push-anchore-image push-clair-image push-registry-image push-trivy-image push-vilicus-image
+push-images: push-registry-image push-anchore-image push-clair-image push-trivy-image push-vilicus-image
 
 push-anchore-image:
 	chmod +x scripts/push-anchore-image.sh
