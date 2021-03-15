@@ -18,7 +18,7 @@ build_anchoredb () {
     printf $COLOR_YELO"Stop container anchore: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Kill postgres pid: Starting\n"$COLOR_RESET
-    docker exec anchoredb sh -c 'pkill postgres'
+    docker exec -u postgres anchoredb sh -c 'pg_ctl stop -m smart'
     printf $COLOR_YELO"Kill postgres pid: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Run docker commit: Starting\n"$COLOR_RESET

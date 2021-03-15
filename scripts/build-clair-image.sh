@@ -18,7 +18,7 @@ build_clairdb () {
     printf $COLOR_YELO"Stop container clair: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Kill postgres pid: Starting\n"$COLOR_RESET
-    docker exec clairdb sh -c 'pkill postgres'
+    docker exec -u postgres clairdb sh -c 'pg_ctl stop -m smart'
     printf $COLOR_YELO"Kill postgres pid: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Run docker commit: Starting\n"$COLOR_RESET
