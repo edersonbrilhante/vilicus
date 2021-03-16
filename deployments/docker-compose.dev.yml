@@ -7,3 +7,16 @@ services:
     command: sh -c 'dockerize -wait tcp://vilicusdb:5432 -wait http://anchore_engine:8228/health -wait http://clair:6061/healthz  -wait http://trivy:8080/healthz -wait-retry-interval 10s -timeout 1000s go run cmd/migration/main.go && go run cmd/api/main.go'
     volumes:
         - "../:/go/src/github.com/edersonbrilhante/vilicus"
+  vilicus_client:
+    container_name: vilicus_client
+    build:
+      context: ../
+      dockerfile: deployments/dockerfiles/vilicus/dev/Dockerfile
+    command: sh -c 'dockerize -wait http://vilicus:8080/healthz -wait-retry-interval 60s -timeout 2000s tail -f /dev/null'
+    volumes:
+        - "../:/go/src/github.com/edersonbrilhante/vilicus"
+        - "../artifacts:/artifacts"
+    networks:
+      - vilicus_net
+    depends_on:
+      - vilicus
