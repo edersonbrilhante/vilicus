@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 
 	"github.com/edersonbrilhante/vilicus/pkg/types"
@@ -50,7 +51,7 @@ func (a *Anchore) Parser() error {
 
 		vuln := types.Vuln{
 			Fix:            v.Fix,
-			URL:            []string{v.URL},
+			URL:            filterValidURLs([]string{v.URL}),
 			Name:           v.Vuln,
 			Vendor:         "AnchoreEngine",
 			Severity:       v.Severity,
@@ -154,4 +155,15 @@ func (a *Anchore) getVuln(imageDigest string) (vulnerabilityResponse, error) {
 	err = json.Unmarshal(resp.Body(), &vuln)
 
 	return vuln, err
+}
+
+func filterValidURLs(urls []string) []string {
+	validURLs := []string{}
+	for _, ur := range urls {
+		u, err := url.Parse(ur)
+		if err == nil && u.Scheme != "" && u.Host != "" {
+			validURLs = append(validURLs, u.String())
+		}
+	}
+	return validURLs
 }

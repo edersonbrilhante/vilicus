@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"net/url"
+
 	"github.com/edersonbrilhante/vilicus/pkg/types"
 	"github.com/edersonbrilhante/vilicus/pkg/util/config"
 
@@ -66,7 +68,7 @@ func (t *Trivy) Parser() error {
 
 			vuln := types.Vuln{
 				Fix:            v.FixedVersion,
-				URL:            v.References,
+				URL:            filterValidURLs(v.References),
 				Name:           v.VulnerabilityID,
 				Vendor:         "Trivy",
 				Severity:       strings.Title(strings.ToLower(v.Severity)),
@@ -117,4 +119,15 @@ func (t *Trivy) dockerScanner(ctx context.Context) (scanner.Scanner, func(), err
 	artifact := aimage.NewArtifact(imageImage, artifactCache)
 	s := scanner.NewScanner(clientScanner, artifact)
 	return s, cleanup, nil
+}
+
+func filterValidURLs(urls []string) []string {
+	validURLs := []string{}
+	for _, ur := range urls {
+		u, err := url.Parse(ur)
+		if err == nil && u.Scheme != "" && u.Host != "" {
+			validURLs = append(validURLs, u.String())
+		}
+	}
+	return validURLs
 }
