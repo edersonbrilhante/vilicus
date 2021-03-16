@@ -3,6 +3,8 @@
 
 local-volumes/
 
+artifacts
+
 vilicus-api-bin
 vilicus-client-bin
 vilicus-migration-bin

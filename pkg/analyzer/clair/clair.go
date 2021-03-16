@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"net/http"
+	"net/url"
 	"sync"
 )
 
@@ -67,7 +68,7 @@ func (c *Clair) Parser() error {
 
 			vuln := types.Vuln{
 				Fix:            v.FixedInVersion,
-				URL:            strings.Split(v.Links, " "),
+				URL:            filterValidURLs(strings.Split(v.Links, " ")),
 				Name:           v.Name,
 				Vendor:         "Clair",
 				Severity:       v.NormalizedSeverity,
@@ -185,4 +186,15 @@ func (c *Clair) getVuln(rid string) (vulnerabilityReport, error) {
 	err = json.Unmarshal(resp.Body(), &vulnResp)
 
 	return vulnResp, err
+}
+
+func filterValidURLs(urls []string) []string {
+	validURLs := []string{}
+	for _, ur := range urls {
+		u, err := url.Parse(ur)
+		if err == nil && u.Scheme != "" && u.Host != "" {
+			validURLs = append(validURLs, u.String())
+		}
+	}
+	return validURLs
 }
