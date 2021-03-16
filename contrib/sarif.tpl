@@ -15,8 +15,8 @@
           "name": "Vilicus",
           "informationUri": "https://github.com/edersonbrilhante/vilicus",
           "fullName": "Vilicus",
-          "semanticVersion": "v0.0.2", 
-          "version": "0.0.2", 
+          "semanticVersion": "v0.0.3",
+          "version": "0.0.3", 
           {{- $vulns := vulnList $analysis.Results  }}
           "rules": [
           {{- $first_rule := true }}
