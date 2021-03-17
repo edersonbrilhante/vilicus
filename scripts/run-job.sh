@@ -6,15 +6,26 @@ set -e
 set -u
 
 function set_vars (){
+  if [ -z ${TEMPLATE+x} ]; then
+    echo '$TEMPLATE is unset'
+    exit 2
+  fi
+  
+  if [ -z ${OUTPUT+x} ]; then
+    echo '$TEMPLATE is unset'
+    exit 2
+  fi
+  
   if [ -z ${IMAGE+x} ]; then
     echo '$IMAGE is unset'
     exit 2
   fi
+  
+  if [ -z ${CONFIG+x} ]; then
+    CONFIG=/opt/vilicus/configs/conf.yaml
+  fi
 
   CMD='dockerize -wait http://vilicus:8080/healthz -wait-retry-interval 60s -timeout 2000s vilicus-client'
-  TEMPLATE=/opt/vilicus/contrib/sarif.tpl
-  CONFIG=/opt/vilicus/configs/conf.yaml
-  OUTPUT=/artifacts/results.sarif
 }
 
 function push_image (){
