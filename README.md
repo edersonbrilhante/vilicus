@@ -55,24 +55,20 @@ chmod +x ./run-job.sh
 ```
 The result will be stored in into the file set by the environment variable `OUTPUT`.
 
-#### Template and Output
-**Gitlab**
-***Template***
-```/opt/vilicus/contrib/gitlab.tpl```
-***Output***
-```/artifacts/gl-container-scanning-report.json```
+### Templates and Outputs
+**Gitlab**<br>
+***Template***: `/opt/vilicus/contrib/gitlab.tpl`<br>
+***Output***: `/artifacts/gl-container-scanning-report.json`
 
-**Sarif**
-***Template***
-```/opt/vilicus/contrib/sarif.tpl```
-***Output***
-```/artifacts/result.sarif```
+**Sarif**<br>
+***Template***: `/opt/vilicus/contrib/sarif.tpl`<br>
+***Output***: `/artifacts/result.sarif`
 
-#### Public image and Local images
+### Public image and Local images
 Vilicus provides support images hosted in public repository and local builds. Public image is an image hosted in public repository such as DockerHub. To scan images in self-hosted registry or local build you must tag the image to the vilicus local registry.
 
 **Self-hosted registry**
-```docker tag <self-hosted-registry>/<image:tag> localhost:5000/<image:tag>```
+`docker tag <self-hosted-registry>/<image:tag> localhost:5000/<image:tag>`
 
 **Local build**
-```docker build -t localhost:5000/<image:tag> -f <Dockerfile> <context>```
+`docker build -t localhost:5000/<image:tag> -f <Dockerfile> <context>`
