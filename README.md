@@ -44,6 +44,7 @@ docker-compose -f deployments/docker-compose.yaml up -d
 ## Usage
 
 ### Using vilicus client
+Run these following commands:
 ```
 export TEMPLATE=<template>
 export OUTPUT=<output>
@@ -52,6 +53,8 @@ wget -O run-job.sh https://raw.githubusercontent.com/edersonbrilhante/vilicus/de
 chmod +x ./run-job.sh
 ./run-job.sh
 ```
+The result will be stored in into the file set by the environment variable `OUTPUT`.
+
 #### Template and Output
 **Gitlab**
 ***Template***
