@@ -49,7 +49,7 @@ Run these following commands:
 export TEMPLATE=<template>
 export OUTPUT=<output>
 export IMAGE=<public_image>|<vilicus_local_image>
-wget -O run-job.sh https://raw.githubusercontent.com/edersonbrilhante/vilicus/develop/scripts/run-job.sh
+wget -O run-job.sh https://raw.githubusercontent.com/edersonbrilhante/vilicus/main/scripts/run-job.sh
 chmod +x ./run-job.sh
 ./run-job.sh
 ```
