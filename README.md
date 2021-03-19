@@ -43,6 +43,17 @@ docker-compose -f deployments/docker-compose.yaml up -d
 
 ## Usage
 
+### Requirements
+- Disk Space ~30GB:
+  - Docker System:
+    - Images ~14GB
+    - Containers ~11GB
+    - Local Volumes ~200MB
+- Docker
+- Docker Compose
+- Bash
+- Wget
+
 ### Using vilicus client
 Run these following commands:
 ```
