@@ -74,7 +74,7 @@ const FeaturesGitlabSplit = ({
                   Vilicus GitlabCI Template
                   </h3>
                 <p className="m-0">
-                Vilicus provides a <Link to="https://github.com/edersonbrilhante/vilicus-gitlab">GitlabCI Template</Link> to help you scanning container images in your CI/CD.
+                Vilicus provides a <a href="https://github.com/edersonbrilhante/vilicus-gitlab">GitlabCI Template</a> to help you scanning container images in your CI/CD.
                   </p>
               </div>
               <div className={
@@ -100,7 +100,7 @@ const FeaturesGitlabSplit = ({
                   Gitlab Security Tab
                   </h3>
                 <p className="m-0">
-                The template is integrated with Gitlab Security Tab using the <Link to="https://docs.gitlab.com/ee/user/application_security/container_scanning/#reports-json-format">Container Scanning Report</Link> to import the results. 
+                The template is integrated with Gitlab Security Tab using the <a href="https://docs.gitlab.com/ee/user/application_security/container_scanning/#reports-json-format">Container Scanning Report</a> to import the results. 
                   </p>
               </div>
               <div className={

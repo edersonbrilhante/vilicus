@@ -74,7 +74,7 @@ const FeaturesGithubSplit = ({
                   Vilicus Github Action
                   </h3>
                 <p className="m-0">
-                Vilicus provides a <Link to="https://github.com/marketplace/actions/vilicus-scan">GitHub Action</Link> to help you scanning container images in your CI/CD.
+                Vilicus provides a <a href="https://github.com/marketplace/actions/vilicus-scan">GitHub Action</a> to help you scanning container images in your CI/CD.
                   </p>
               </div>
               <div className={
@@ -100,7 +100,7 @@ const FeaturesGithubSplit = ({
                   Github Code Scanning
                   </h3>
                 <p className="m-0">
-                You can integrate with Github Code Scanning using the <Link to="https://docs.github.com/en/code-security/secure-coding/uploading-a-sarif-file-to-github">Github Action Upload Sarif</Link> importing the results. 
+                You can integrate with Github Code Scanning using the <a href="https://docs.github.com/en/code-security/secure-coding/uploading-a-sarif-file-to-github">Github Action Upload Sarif</a> importing the results. 
                   </p>
               </div>
               <div className={
