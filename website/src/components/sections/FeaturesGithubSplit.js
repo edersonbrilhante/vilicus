@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { SectionSplitProps } from '../../utils/SectionProps';
 import SectionHeader from './partials/SectionHeader';
 import Image from '../elements/Image';
