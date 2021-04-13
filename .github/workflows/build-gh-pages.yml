@@ -19,6 +19,7 @@ jobs:
           npm run-script build
         env:
           REACT_APP_GA_CODE: ${{ secrets.REACT_APP_GA_CODE }}
+          REACT_APP_FORM_SCAN: ${{ secrets.REACT_APP_FORM_SCAN }}
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
