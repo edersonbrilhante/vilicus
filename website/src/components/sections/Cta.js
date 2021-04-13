@@ -57,7 +57,7 @@ const Cta = ({
               </h3>
           </div>
           <div className="cta-action">
-            <Input type="emailtext" label="Search Image" labelHidden hasIcon="right" placeholder="You Container Image: <domain>/<org>/<image>:<tag>">
+            <Input type="text" label="Search Image" labelHidden hasIcon="right" placeholder="You Container Image: <domain>/<org>/<image>:<tag>">
               <svg width="16" height="12" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 5H1c-.6 0-1 .4-1 1s.4 1 1 1h8v5l7-6-7-6v5z" fill="#376DF9" />
               </svg>
