@@ -92,7 +92,8 @@ class DatatablePage extends React.Component {
             not_found: false
           })
         }
-        catch  (e) {
+        catch (e) {
+          /* eslint eqeqeq: 0 */
           if (e == 'HTTPError: 404'){
             this.setState({
               data: {
