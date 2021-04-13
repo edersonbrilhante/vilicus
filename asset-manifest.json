@@ -1,17 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.880ff0a1.chunk.css",
-    "main.js": "/static/js/main.265b897d.chunk.js",
-    "main.js.map": "/static/js/main.265b897d.chunk.js.map",
+    "main.css": "/static/css/main.cf4b2c28.chunk.css",
+    "main.js": "/static/js/main.635efb78.chunk.js",
+    "main.js.map": "/static/js/main.635efb78.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.7b22b188.js",
     "runtime-main.js.map": "/static/js/runtime-main.7b22b188.js.map",
-    "static/js/2.0e1d7338.chunk.js": "/static/js/2.0e1d7338.chunk.js",
-    "static/js/2.0e1d7338.chunk.js.map": "/static/js/2.0e1d7338.chunk.js.map",
+    "static/css/2.025ac831.chunk.css": "/static/css/2.025ac831.chunk.css",
+    "static/js/2.4e732f0b.chunk.js": "/static/js/2.4e732f0b.chunk.js",
+    "static/js/2.4e732f0b.chunk.js.map": "/static/js/2.4e732f0b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.ff3454c7039406a326b28a691ace6b64.js": "/precache-manifest.ff3454c7039406a326b28a691ace6b64.js",
+    "precache-manifest.d945cb23ed87dd4ed826a5c7f7fb5465.js": "/precache-manifest.d945cb23ed87dd4ed826a5c7f7fb5465.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.880ff0a1.chunk.css.map": "/static/css/main.880ff0a1.chunk.css.map",
-    "static/js/2.0e1d7338.chunk.js.LICENSE.txt": "/static/js/2.0e1d7338.chunk.js.LICENSE.txt",
+    "static/css/2.025ac831.chunk.css.map": "/static/css/2.025ac831.chunk.css.map",
+    "static/css/main.cf4b2c28.chunk.css.map": "/static/css/main.cf4b2c28.chunk.css.map",
+    "static/js/2.4e732f0b.chunk.js.LICENSE.txt": "/static/js/2.4e732f0b.chunk.js.LICENSE.txt",
+    "static/media/mdb.css": "/static/media/arrow_right.8ef6a08c.svg",
+    "static/media/style.scss": "/static/media/illustration-section-02.63d0555d.svg",
+    "static/media/all.min.css": "/static/media/fa-solid-900.e8a427e1.woff2",
     "static/media/feature-tile-icon-01.svg": "/static/media/feature-tile-icon-01.0f9928d7.svg",
     "static/media/feature-tile-icon-02.svg": "/static/media/feature-tile-icon-02.fa9ba00b.svg",
     "static/media/feature-tile-icon-03.svg": "/static/media/feature-tile-icon-03.6a177696.svg",
@@ -22,12 +27,13 @@
     "static/media/github-sec.png": "/static/media/github-sec.e2925c9c.png",
     "static/media/gitlab-ci.png": "/static/media/gitlab-ci.203b6439.png",
     "static/media/gitlab-sec.png": "/static/media/gitlab-sec.b01d0e5e.png",
-    "static/media/style.scss": "/static/media/illustration-section-02.63d0555d.svg"
+    "static/media/logo.svg": "/static/media/logo.2810a88b.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.7b22b188.js",
-    "static/js/2.0e1d7338.chunk.js",
-    "static/css/main.880ff0a1.chunk.css",
-    "static/js/main.265b897d.chunk.js"
+    "static/css/2.025ac831.chunk.css",
+    "static/js/2.4e732f0b.chunk.js",
+    "static/css/main.cf4b2c28.chunk.css",
+    "static/js/main.635efb78.chunk.js"
   ]
 }
