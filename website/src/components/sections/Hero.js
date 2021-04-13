@@ -57,7 +57,7 @@ const Hero = ({
                 <br></br>
               <div className="reveal-from-bottom" data-reveal-delay="600">
                 <ButtonGroup>
-                  <Button tag="a" color="primary" wideMobile href="/service">
+                  <Button tag="a" color="primary" wideMobile href="/#service">
                     Search for vulnerabilities
                     </Button>
                   <Button tag="a" color="dark" wideMobile href="https://github.com/edersonbrilhante/vilicus">
