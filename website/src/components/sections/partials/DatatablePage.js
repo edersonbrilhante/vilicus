@@ -69,7 +69,7 @@ class DatatablePage extends React.Component {
       if (prevProps.image !== this.props.image) {
         try {
           let result = await api.RepositoryFiles.showRaw(25651036,json_name,'main');
-          results_json = JSON.parse(result)['runs'][0]['results']  
+          results_json = JSON.parse(result)['vulnerabilities']  
           let newRows = []
 
           for (let i=0; results_json.length > i; i++){
@@ -117,7 +117,18 @@ class DatatablePage extends React.Component {
       return <h5>Finding results....</h5>
     }
     if (this.state.not_found === true){
-      return <h5>Image not Found</h5>
+      return (
+        <>
+        <h5>Image was not found. Schedule a scan</h5>
+        <div class="embed-responsive embed-responsive-16by9 bg-white">
+          <iframe class="embed-responsive-item" 
+          title="Form Schedule a scan"
+          src={process.env.REACT_APP_FORM_SCAN}
+          allowfullscreen></iframe>
+        </div>
+        </>
+      )
+
     }
     return (
       <MDBDataTable
