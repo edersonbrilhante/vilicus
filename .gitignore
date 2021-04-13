@@ -8,3 +8,6 @@ artifacts
 vilicus-api-bin
 vilicus-client-bin
 vilicus-migration-bin
+
+*/node_modules
+*/*/build
