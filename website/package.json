@@ -6,7 +6,9 @@
   "dependencies": {
     "@gitbeaker/browser": "^28.3.0",
     "classnames": "^2.2.6",
+    "docker-parse-image": "^3.0.1",
     "lodash": "^4.17.15",
+    "mdbreact": "^5.0.2",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -20,8 +22,6 @@
     "directory": "website"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

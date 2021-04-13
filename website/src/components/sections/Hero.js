@@ -53,13 +53,15 @@ const Hero = ({
               <p className="m-0 mb-32 reveal-from-bottom" data-reveal-delay="400">
               Vilicus is an open-source tool that orchestrates security scans of container images(Docker/OCI) and centralizes all results into a database for further analysis and metrics.
                 </p>
+                <br></br>
+                <br></br>
               <div className="reveal-from-bottom" data-reveal-delay="600">
                 <ButtonGroup>
-                  {/* <Button tag="a" color="primary" wideMobile href="https://cruip.com/">
-                    Get started
-                    </Button> */}
+                  <Button tag="a" color="primary" wideMobile href="/service">
+                    Search for vulnerabilities
+                    </Button>
                   <Button tag="a" color="dark" wideMobile href="https://github.com/edersonbrilhante/vilicus">
-                    View on Github
+                    Source Code 
                     </Button>
                 </ButtonGroup>
               </div>

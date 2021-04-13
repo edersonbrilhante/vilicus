@@ -1,0 +1,25 @@
+.pagination .page-item .page-link { background-color: #fff; }
+.pagination .page-item.active .page-link { background-color: #3f51b5; }
+
+.pagination .page-item.active .page-link:focus {
+background-color: #3f51b5;
+color: #fff
+}
+.pagination .page-item.active .page-link:hover {
+background-color: #3f51b5;
+color: #fff
+}
+
+.pagination .page-item .page-link:hover {
+background-color: #3f51b5;
+color: #fff
+}   
+
+.pagination .page-item .page-link:focus {
+background-color: #3f51b5;
+color: #fff
+}
+
+.dataTable th:first-child, .dataTable td:first-child{
+    padding-left: .6rem;
+}
