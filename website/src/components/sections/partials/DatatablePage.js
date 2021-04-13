@@ -120,11 +120,11 @@ class DatatablePage extends React.Component {
       return (
         <>
         <h5>Image was not found. Schedule a scan</h5>
-        <div class="embed-responsive embed-responsive-16by9 bg-white">
-          <iframe class="embed-responsive-item" 
+        <div className="embed-responsive embed-responsive-16by9 bg-white">
+          <iframe className="embed-responsive-item" 
           title="Form Schedule a scan"
           src={process.env.REACT_APP_FORM_SCAN}
-          allowfullscreen></iframe>
+          ></iframe>
         </div>
         </>
       )
