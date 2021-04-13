@@ -53,9 +53,9 @@ const FeaturesTiles = ({
       {...props}
       className={outerClasses}
     >
-      <div className="container">
+      <div className="container" >
         <div className={innerClasses}>
-          <SectionHeader data={sectionHeader} className="center-content" />
+          <SectionHeader data={sectionHeader} className="center-content reveal-from-bottom" data-reveal-delay="800" />
           <div className={tilesClasses}>
 
             <div className="tiles-item reveal-from-bottom">
@@ -66,7 +66,7 @@ const FeaturesTiles = ({
                       src={require('./../../assets/images/feature-tile-icon-01.svg')}
                       alt="Features tile icon 01"
                       width={64}
-                      height={64} />
+                      height={64} />  
                   </div>
                 </div>
                 <div className="features-tiles-item-content">
