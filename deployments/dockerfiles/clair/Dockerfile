@@ -2,10 +2,11 @@ FROM vilicus/registry:latest as certs
 
 FROM korbin/dockerize:latest as dockerize
 
-FROM quay.io/projectquay/clair:4.0.2
-LABEL vilicus.app.version=4.0.2
+FROM quay.io/projectquay/clair:4.0.5
+LABEL vilicus.app.version=4.0.5
 
 COPY deployments/dockerfiles/clair/config.yaml /opt/vilicus/data/config.yaml
+COPY deployments/dockerfiles/clair/update.yaml /opt/vilicus/data/update.yaml
 
 USER root:root
 COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize

@@ -48,11 +48,11 @@ run_updater() {
     printf $COLOR_YELO"Test connection with clair: Done\n\n"$COLOR_RESET
     
     printf $COLOR_YELO"Run export-updaters: Starting\n"$COLOR_RESET
-    docker exec clair sh -c 'clairctl export-updaters  /tmp/updates.gz'
+    docker exec clair sh -c 'clairctl --config /opt/vilicus/data/update.yaml export-updaters  /tmp/updates.gz'
     printf $COLOR_YELO"Run export-updaters: Done\n\n"$COLOR_RESET
     
     printf $COLOR_YELO"Run import-updaters: Starting\n"$COLOR_RESET
-    docker exec clair sh -c 'clairctl import-updaters  /tmp/updates.gz'
+    docker exec clair sh -c 'clairctl --config /opt/vilicus/data/update.yaml import-updaters  /tmp/updates.gz'
     printf $COLOR_YELO"Run import-updaters: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Run updater: Done\n\n"$COLOR_RESET
