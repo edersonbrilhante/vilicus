@@ -31,6 +31,10 @@ build_clairdb () {
     printf $COLOR_YELO"Build preset clairdb: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build preset clairdb image: Done\n\n"$COLOR_RESET
+
+    printf $COLOR_YELO"Removing preset clairdb: Starting\n"$COLOR_RESET
+    docker image rm vilicus/clairdb:local-update
+    printf $COLOR_YELO"Removing preset clairdb: Done\n\n"$COLOR_RESET
 }
 
 run_updater() {

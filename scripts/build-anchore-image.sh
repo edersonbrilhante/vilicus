@@ -31,6 +31,10 @@ build_anchoredb () {
     printf $COLOR_YELO"Build preset anchoredb: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build preset anchoredb image: Done\n\n"$COLOR_RESET
+    
+    printf $COLOR_YELO"Removing preset anchoredb: Starting\n"$COLOR_RESET
+    docker image rm vilicus/anchoredb:local-update
+    printf $COLOR_YELO"Removing preset anchoredb: Done\n\n"$COLOR_RESET
 }
 
 run_updater() {
