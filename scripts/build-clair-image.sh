@@ -41,19 +41,15 @@ run_updater() {
     printf $COLOR_YELO"Run compose: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Starting postgres\n"$COLOR_RESET
-    docker exec clairdb sh -c 'mkdir -p /data && chown -R postgres:postgres /data && docker-entrypoint.sh postgres' &
+    docker exec clairdb sh -c 'docker-entrypoint.sh postgres' &
+
+    printf $COLOR_YELO"Test connection with clairdb and running clair api: Starting\n"$COLOR_RESET
+    docker exec clair sh -c "dockerize -wait tcp://clairdb:5432 -wait-retry-interval 10s -timeout 1000s -timeout 1000s /bin/clair" &
 
     printf $COLOR_YELO"Test connection with clair: Starting\n"$COLOR_RESET
-    docker run --network container:clair vilicus/vilicus:latest sh -c "dockerize -wait http://clair:6061/healthz -wait-retry-interval 10s -timeout 1000s echo done"
-    printf $COLOR_YELO"Test connection with clair: Done\n\n"$COLOR_RESET
-    
-    printf $COLOR_YELO"Run export-updaters: Starting\n"$COLOR_RESET
-    docker exec clair sh -c 'clairctl --config /opt/vilicus/data/update.yaml export-updaters  /tmp/updates.gz'
-    printf $COLOR_YELO"Run export-updaters: Done\n\n"$COLOR_RESET
-    
-    printf $COLOR_YELO"Run import-updaters: Starting\n"$COLOR_RESET
-    docker exec clair sh -c 'clairctl --config /opt/vilicus/data/update.yaml import-updaters  /tmp/updates.gz'
-    printf $COLOR_YELO"Run import-updaters: Done\n\n"$COLOR_RESET
+    docker run --network container:clair vilicus/vilicus:latest sh -c "dockerize -wait http://clair:6061/healthz -wait-retry-interval 10s -timeout 100000s echo done"
+    printf $COLOR_YELO"Test connection with clair: Done\n\n"$COLOR_RESET    
+    printf $COLOR_YELO"Test connection with clairdb and running clair api: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Run updater: Done\n\n"$COLOR_RESET
 }

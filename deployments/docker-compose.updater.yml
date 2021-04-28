@@ -2,9 +2,9 @@ version: '3'
 services:
   clair:
     container_name: clair
-    command: sh -c 'dockerize -wait tcp://clairdb:5432 -wait-retry-interval 10s -timeout 1000s /bin/clair'
+    entrypoint: "tail -f /dev/null"
     environment:
-      CLAIR_CONF: /opt/vilicus/data/config.yaml
+      CLAIR_CONF: /opt/vilicus/data/update.yaml
       CLAIR_MODE: combo
     image: vilicus/clair:latest
     ports:
@@ -17,7 +17,7 @@ services:
 
   clairdb:
     container_name: clairdb
-    image: postgres:9.6.21-alpine
+    image: vilicus/clairdb:latest
     entrypoint: "tail -f /dev/null"
     environment:
       PGDATA: /data
@@ -25,6 +25,10 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     networks:
       - vilicus_net
 
