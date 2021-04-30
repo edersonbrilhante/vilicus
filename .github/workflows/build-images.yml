@@ -10,6 +10,7 @@ on:
 jobs:
   update-images:
     runs-on: ubuntu-latest
+    timeout-minutes: 600
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@v3
@@ -34,7 +35,6 @@ jobs:
       - name: Build Clair Image
         run: |
           make build-clair-image
-        timeout-minutes: 600
      
       - name: Build Anchore Image
         run: |
