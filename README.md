@@ -83,3 +83,19 @@ Vilicus provides support images hosted in public repository and local builds. Pu
 
 **Local build**
 `docker build -t localhost:5000/<image:tag> -f <Dockerfile> <context>`
+
+### Free Online Service
+Vilicus also provides a [free online service](http://vilicus.edersonbrilhante.com.br/). 
+
+#### How it works?
+This service is a serverless full-stack application with backend workers and database only using git and ci/cd runners.
+
+The Frontend is hosted in GitHub Pages. This frontend is a landing page with a free service to scan or display the vulnerabilities in container images.
+
+The results of container image scans are stored in a GitLab Repository.
+
+When the user asks to show the results from an image, the frontend consumes the GitLab API to retrieve the file with vulns from this image. In case this image is not scanned yet, the user has the option to schedule a scan using a google form.
+
+When this form is filled, the data is sent to a Google Spreadsheet.
+
+A GitHub Workflow runs every 5 minutes to check if there are new answers in this Spreadsheet. For each new image in the Spreadsheet, this workflow triggers another Workflow to scan the image and save the result in the GitLab Repository.
