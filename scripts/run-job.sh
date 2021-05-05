@@ -12,7 +12,7 @@ function set_vars (){
   fi
   
   if [ -z ${OUTPUT+x} ]; then
-    echo '$TEMPLATE is unset'
+    echo '$OUTPUT is unset'
     exit 2
   fi
   
