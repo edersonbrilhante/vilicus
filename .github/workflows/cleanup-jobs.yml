@@ -1,7 +1,7 @@
 name: "Cleanup Old Jobs"
 on:
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: '0 0 * * *'
 
 jobs:
   delete_jobs:
@@ -12,4 +12,4 @@ jobs:
         with:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
-          retain_days: 7
+          retain_days: 1
