@@ -41,7 +41,7 @@ run_updater() {
     printf $COLOR_YELO"Run updater: Starting\n\n"$COLOR_RESET
     
     printf $COLOR_YELO"Run compose: Starting\n"$COLOR_RESET    
-    docker-compose -f deployments/docker-compose.updater.yml -f deployments/docker-compose.adminer.yml up --build -d --force  --remove-orphans --renew-anon-volumes anchore adminer
+    docker-compose -f deployments/docker-compose.updater.yml up --build -d --force  --remove-orphans --renew-anon-volumes anchore
     printf $COLOR_YELO"Run compose: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Starting postgres\n"$COLOR_RESET
