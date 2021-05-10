@@ -28,7 +28,6 @@ build_clairdb () {
     
     printf $COLOR_YELO"Run cleanup docker: Starting\n"$COLOR_RESET
     docker-compose -f deployments/docker-compose.updater.yml -f deployments/docker-compose.adminer.yml down -v --rmi all
-    docker image rm vilicus/clairdb:latest
     printf $COLOR_YELO"Run cleanup docker: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build preset clairdb: Starting\n"$COLOR_RESET
