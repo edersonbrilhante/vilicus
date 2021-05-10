@@ -21,16 +21,16 @@ build_clairdb () {
     docker exec -u postgres clairdb sh -c 'pg_ctl stop -m smart'
     printf $COLOR_YELO"Kill postgres pid: Done\n\n"$COLOR_RESET
 
-
     printf $COLOR_YELO"Run docker commit: Starting\n"$COLOR_RESET
     CID=$(docker inspect --format="{{.Id}}" clairdb)
     docker commit $CID vilicus/clairdb:local-update
     printf $COLOR_YELO"Run docker commit: Done\n\n"$COLOR_RESET
     
-    printf $COLOR_YELO"Run cleanup docker image: Starting\n"$COLOR_RESET
+    printf $COLOR_YELO"Run cleanup docker: Starting\n"$COLOR_RESET
     docker image prune -f
-    printf $COLOR_YELO"Run cleanup docker image: Done\n\n"$COLOR_RESET
-    
+    docker container prune -f
+    docker volume prune -f
+    printf $COLOR_YELO"Run cleanup docker: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Build preset clairdb: Starting\n"$COLOR_RESET
     docker build -f deployments/dockerfiles/clair/db/Dockerfile -t vilicus/clairdb:latest .
