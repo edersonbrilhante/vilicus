@@ -27,6 +27,7 @@ build_clairdb () {
     printf $COLOR_YELO"Run docker commit: Done\n\n"$COLOR_RESET
     
     printf $COLOR_YELO"Run cleanup docker: Starting\n"$COLOR_RESET
+    docker image rm vilicus/clairdb:latest
     docker image prune -f
     docker container prune -f
     docker volume prune -f
