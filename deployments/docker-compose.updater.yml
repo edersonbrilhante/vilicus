@@ -17,7 +17,7 @@ services:
 
   clairdb:
     container_name: clairdb
-    image: vilicus/clairdb:latest
+    image: postgres:9.6.22-alpine
     entrypoint: "tail -f /dev/null"
     environment:
       PGDATA: /data

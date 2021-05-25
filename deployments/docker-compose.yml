@@ -124,7 +124,7 @@ services:
 
   vilicusdb:
     container_name: vilicusdb
-    image: postgres:9.6.21-alpine  
+    image: postgres:9.6.22-alpine  
     environment:
       PGDATA: /data
       POSTGRES_USER: username

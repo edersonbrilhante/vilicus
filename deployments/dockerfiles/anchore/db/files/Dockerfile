@@ -1,6 +1,6 @@
 FROM vilicus/anchoredb:dumpsql as dumpsql
 
-FROM postgres:9.6.21-alpine
+FROM postgres:9.6.22-alpine
 LABEL vilicus.app.version=9.6.21-alpine
 
 COPY --chown=postgres:postgres --from=dumpsql /opt/vilicus/data/anchore_db.tar.gz /opt/vilicus/data/anchore_db.tar.gz
