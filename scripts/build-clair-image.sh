@@ -51,13 +51,9 @@ run_updater() {
     printf $COLOR_YELO"Starting postgres\n"$COLOR_RESET
     docker exec clairdb sh -c 'docker-entrypoint.sh postgres' &
 
-    printf $COLOR_YELO"Test connection with clairdb and running clair api: Starting\n"$COLOR_RESET
-    docker exec clair sh -c "dockerize -wait tcp://clairdb:5432 -wait-retry-interval 10s -timeout 1000s /bin/clair" &
-
     printf $COLOR_YELO"Test connection with clair: Starting\n"$COLOR_RESET
     docker run --network container:clair vilicus/vilicus:latest sh -c "dockerize -wait http://clair:6061/healthz -wait-retry-interval 60s -timeout 100000s echo done"
     printf $COLOR_YELO"Test connection with clair: Done\n\n"$COLOR_RESET    
-    printf $COLOR_YELO"Test connection with clairdb and running clair api: Done\n\n"$COLOR_RESET
 
     printf $COLOR_YELO"Run updater: Done\n\n"$COLOR_RESET
 }
