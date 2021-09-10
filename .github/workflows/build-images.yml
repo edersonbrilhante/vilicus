@@ -3,7 +3,7 @@ name: "Build Vilicus Images"
 on:
   push:
     branches:
-      - main
+      - test/clair-build
   schedule:
     - cron:  '1 1 * * *'
 
