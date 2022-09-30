@@ -13,7 +13,7 @@ require (
 	github.com/go-resty/resty/v2 v2.4.0
 	github.com/google/go-containerregistry v0.4.0
 	github.com/huandu/xstrings v1.3.2 // indirect
-	github.com/labstack/echo/v4 v4.1.17
+	github.com/labstack/echo/v4 v4.9.0
 	github.com/lib/pq v1.9.0
 	github.com/mitchellh/copystructure v1.1.1 // indirect
 	github.com/quay/claircore v1.0.5
